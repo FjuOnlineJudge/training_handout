@@ -1,0 +1,169 @@
+\section{基本}
+\subsection{複雜度}
+複雜度是定性描述該演算法執行成本(時間/空間)函式，用來分析資料結構和演算法(DSA)。
+\subsubsection{常用函數}
+\begin{enumerate}
+\item [Big $O$]
+用來表示一個複雜度的上界，定義為$f(n)\in O(g(n))\ \ iff\ \ \exists\ c,\ N\in R^{+},\ \forall n \geq  N$ 有 $|f(n)| \leq |cg(n)|$，例如$f(n)=5n^2+4n+1$，我們會注重最高項$5n^2$，且我們會5是常數，得出$f(n)\in O(n^2)$
+\item [Big $\Omega$]
+用來表示一個複雜度的下界，對於任意的 $f(n) \in O(g(n))$,都有 $g(n) \in \Omega (f(n))$。
+\item [Big $\Theta$]
+要同時滿足Big $O$和Big $\Omega$
+\end{enumerate}
+Big $O$ 是我們比較常用的，其他兩個可能再一些地方會用到
+    
+\subsubsection{常見複雜度}
+$O(1) < O(log\ n) < O(n) < O(n\ log\ n) < O(n^2) < O(n^3) < O(2^n) < O(n!)$
+另外還有一個在並查集常見，即$O(\alpha(n))$，近似於$O(1)$，可直接當作$O(1)$
+\subsubsection{時間/空間複雜度}
+時間複雜度，和運算有關，*/\%會比+-還要久，而複雜度得項次會跟迴圈有關，初階競賽只會在意你的項次，只要不要太大基本都會過，進階些比賽，有可能出現常數過大，導致複雜度合理卻還是吃TLE的情況，這時候需要利用"壓常數"技巧，降低時間，讓程式AC。 \\  空間複雜度，則是跟你宣告的變數記憶體總和有關，比時間複雜度容易估計，在樹狀的資料結構，往往需要搭配動態記憶體，才不會因為開太多空間而吃了MLE。 \\  題外話，如果你在你的array不是開在全域內，開了10的5,6次，在執行時跑出RE，那你有以下兩種解決方式
+\begin{enumerate}
+\item 把array移至全域
+\item 加上static，表示靜態變數
+\end{enumerate}
+\lstinputlisting{Syntax/static.cpp}
+\subsection{函式}
+函式為程式裡的運算單元，可以接受資料，並回傳指定值。main是C/C++程式的入口函式，接受命令列的參數，正常情況會回傳0代表正常運作。\\
+以下為其語法
+\lstinputlisting{Syntax/function0.cpp}
+範例
+\lstinputlisting{Syntax/function1.cpp}
+函式有個特性為自呼叫，也就是自己的區域可以呼叫自己，但要有終止條件，不然會陷入無限遞迴，同時也要避免遞迴過深，造成stack overflow。
+\lstinputlisting{Syntax/function2.cpp}
+函式有很多用處，一個為模組化，意即相同的部分(最多只差一些參數)，寫成一個函式，除了簡潔，在除錯也比較方便。一個是利用自呼叫特性實作遞迴，遞迴可將問題拆解成同類的子問題而解決問題。\\
+常見遞迴使用
+\begin{enumerate}
+\item 分治
+\item dp中的top-down
+\item 圖/樹的搜索
+\end{enumerate}
+
+\subsection{指標}
+指標是紀錄記憶體的位址的變數，不管是基礎型態或自定義型態皆可用指標，指標的可以讓你直接對記憶體操作。而指標對學習者是一到難度高的門檻，但在程式競賽中，是不可或缺的。\\ 指標在程競中會用到的地方是"動態記憶體配置"，這在比較進階的資料型態會比較常出現。
+\lstinputlisting{Syntax/pointer.cpp}
+\lstinputlisting{Syntax/pointer2.cpp}
+\subsection{參考}
+參考型態代表一個變數的別名，可直接取得變數的位址，並間接透過參考型態別名來操作物件， 作用類似於指標，但卻不必使用指標語法，也就是不必使`*`運算子來提取值。
+\lstinputlisting{Syntax/reference.cpp}
+參考型態可用在取代太長的變數(如：`a[x][y][z]`)，容易維護。另一個是當函式要傳入可修改的值，可取代指標。
+\subsection{傳值}
+函式傳入的參數，可以是一般、指標或是參考型態，以下以Swap來介紹
+\subsubsection{call by value}
+傳入的變數為一般型態，會"複製"一份到函式，原本的變數不會有任何改變。
+\lstinputlisting{Syntax/pass1.cpp}
+\subsubsection{call by address/value of pointer}
+傳入的變數為指標型態，函式內的變數改變，是對記憶體操作，所以原本的數字也會跟著改變。
+\lstinputlisting{Syntax/pass2.cpp}
+\subsubsection{call by reference}
+傳入的變數為參考型態，函數內的變數是原本變數的分身，所以函數內變數改變時，原本變數也會跟者改變。
+\lstinputlisting{Syntax/pass3.cpp}
+ \subsection{struct}
+structc是讓coder能將原本獨立的資料包在一起。例如：三維空間由x座標、y座標、z座標組成。\\
+語法：
+\begin{enumerate}
+\item 型態(type)可以是一般或是指標型態
+\item 也可以寫函式或重載運算子
+\end{enumerate}
+\lstinputlisting{Syntax/struct1.cpp}
+以下的例子為平面上的點。
+\lstinputlisting{Syntax/struct2.cpp}
+\subsubsection{建構子(constructor)、解構子(destructor)}
+建構子和strcut name同名，是用來初始化struct裡的資料，如果不寫的話，會有預設建構子，裡面的資料都是亂數。根據請況可多載，然而，如果你寫了運算子，一定要寫一個不帶任何參數的運算子，否則的話，像第14行這樣只有宣告，沒加其他東西的的程式碼就不會通過。\\
+解構子的名字形式為 $ \sim strcut name$，是在變數離開作用域時運作，不寫的話也是會有預設解構子，在程式比賽中這樣就已足夠。
+\subsubsection{重載運算子}
+c++原有的型態都根據需要，定義了各種運算子，但structㄒ如果有需要的話，須自己定義。而在競賽中，常需要作排序而需要小於運算子(`<`)。
+\subsection{algorithm}
+\subsubsection{sort}
+這個函式傳入兩個變數，代表容器(array 或是 vector)的頭尾$[a,b)$，這裡的b不會排序，用來指示為結尾，例如要排序a陣列的第0到第5個元素。
+\lstinputlisting{Syntax/sort.cpp}
+此函數的複雜度圍$O(n\log n)$，n為排序的個數
+\subsubsection{min/max}
+min和max原本在c定義在math.h內，c++將它移入algorithm中
+\lstinputlisting{Syntax/minmax.cpp}
+\subsubsection{lower\_bound/upper\_bound}
+這兩個函式會在"有序序列"中尋找值，前兩個值放的是容器(array 或是 vector)的頭尾[a,b)，第三的是比較的值val。
+\lstinputlisting{Syntax/bound1.cpp}
+如果要將位置傳換成數字，直接減起始位置就可，下面是一個範例(from cplusplus)：
+\lstinputlisting{Syntax/bound2.cpp}
+\subsubsection{next\_permutation/prev\_permutation}
+這兩個函式會幫你的陣列轉為後/前一個字典序，如果沒有後/前一個字典序，這個函式會回傳false，也不會有任何改變，以下為範例(from cplusplus)：
+\lstinputlisting{Syntax/permutation.cpp}
+\subsection{cmath}
+\subsubsection{atan/atan2} 
+atan/atan2函數是將斜率轉為弧度，如果要在轉為角度就以180度除以PI就好，而atan直接傳入斜率，atan2則是座標，atan2可以處理x=0的狀況，比atan好用。
+\lstinputlisting{Syntax/atan.cpp}
+\subsubsection{log/log2/log10}
+這些都是常用對數函數分別以e,2,10為底
+\lstinputlisting{Syntax/log.cpp}
+\subsubsection{pow}
+此函數會回傳以base為底的exponent次方，若$\geq 10^6$，就會輸出科學記號。
+\lstinputlisting{Syntax/pow.cpp}
+\subsubsection{sqrt}
+此函數會回傳x的根號次方
+\lstinputlisting{Syntax/sqrt.cpp}
+\subsection{iomanip}
+\subsubsection{setw}
+這個函式會將傳入的整數設定輸出寬度後輸出。
+\lstinputlisting{Syntax/setw.cpp}
+\subsubsection{setprecision}
+這個函式設定輸出到小數點後幾位。
+\lstinputlisting{Syntax/setprecision.cpp}
+\subsection{extra syntax}
+\subsubsection{break, continue, return}
+\begin{enumerate}
+\item break：跳出迴圈
+\item continue：這輪不做，到下一輪
+\item return：跳出函式，並回傳值
+\end{enumerate}
+在break, continue, return後的else是無用的，因為如果這三種指令執行了，後面的東西就根本不會執行到。
+\subsubsection{const}
+const用途在於宣告這個變數式不能更動的，這適合用來宣告常數。
+\lstinputlisting{Syntax/const.cpp}
+\subsubsection{static}
+如果一個變數被宣告為static，那麼他只會被宣告一次，直到整個程式結束才被刪除。
+\lstinputlisting{Syntax/static2.cpp}
+\subsubsection{define}
+不知道各位有沒有用過excel中的巨集，他可以幫你做重複性高的動作，C++中的define可以幫你做類似的事。
+\lstinputlisting{Syntax/define.cpp}
+由上面範例可見，define 可以取代程式中出現的特定字元，還可以帶參數，為了要讓使用define後的結果是正確的，請將取代後的字元括號起來，否則會輸出非預期的結果如上面範例第9行
+\lstinputlisting{Syntax/define.cpp}
+\subsubsection{typedef}
+typedef 可以為型態取別名，在之後用到要宣告該型態的時候，可以打該型態之別名，減省時間。C++11開始可以用using來達到相同的事。
+\lstinputlisting{Syntax/typedef.cpp}
+\subsubsection{auto}
+C++11開始，新增了一個關鍵字叫auto，auto可以自動判別變數型態，但必須給他初始值，否則他無法判別型態，C++14開始，可用在function回傳值
+\lstinputlisting{Syntax/auto.cpp}
+\subsubsection{range\_based for}
+C++11開始有另外一種for是range\_based，他只要給兩個參數，一個變數指定資料型態並提供遍歷，另一個為要遍歷的範圍，例子如下。
+\lstinputlisting{Syntax/rangebasefor.cpp}
+\subsection{lambda}
+方便地定義匿名函式
+\subsubsection{lambda-introducer}
+也叫Capture clause，宣告外部變數(在可視範圍(scope)內)傳入此函式內的方法。
+\begin{enumerate}
+\item `[]`:只有兩個中括號，完全不抓取外部的變數。
+\item `[=]`：所有的變數都以傳值(call by value)的方式抓取
+\item `[\&]`：所有的變數都以傳參考(call by reference)的方式抓取
+\item `[x,\&y]`：x變數使用傳值，y變數使用傳參考
+\item `[=,\&y]`：除了y變數使用傳參考以外。其餘的變數皆使用傳值的方式
+\item `[\&,x]`：除了x變數使用傳值以外，其餘的變數皆使用傳參考的方式
+\end{enumerate}
+\subsubsection{lambda declarator}
+也叫參數清單，傳入此函式對應資料。
+\subsubsection{mutable specification}
+指定以傳值方式抓取進來的外部變數，如果用不到可省略。
+與一般函數的傳入參數之異
+\begin{enumerate}
+\item 不可指定參數的預設值。
+\item 不可使用可變長度的參數列表。
+\item 參數列表不可以包含沒有命名的參數。
+\end{enumerate}
+\subsubsection{例外狀況規格}
+指定該函示會丟出的例外，其使用的方法跟一般函數的例外指定方式一樣，如果用不到可省略。
+\subsubsection{傳回值型別}
+指定lambda expression傳回型別，如果 lambda expression 所定義的函數很單純，只有包含一個傳回陳述式（statement）或是根本沒有傳回值的話，可省略(optional)
+\subsubsection{compound-statement}
+亦稱為 Lambda 主體(lambda body)，跟一般的函數內容一樣。\\ \\
+最後來看個lambda範例，結束這一章節。
+\lstinputlisting{Syntax/lambda1.cpp}
+\lstinputlisting{Syntax/lambda2.cpp}
