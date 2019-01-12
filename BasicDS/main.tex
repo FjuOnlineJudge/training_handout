@@ -1,0 +1,212 @@
+\section{基礎資料結構}
+\subsection{什麼是STL?}
+標準函式庫(Standard Template Libiary)，C++內建的資料結構。
+\subsection{型態模板}
+當你要使用容器時，你必須要告訴C++說，你的資料型態是什麼，型態模板的用途就是在於此。\\
+用法：$C <T> name$\\
+而容器內部東西不會只有一個，像map就需要兩種型態。\\
+$map <T1, T2> name$\\
+有時候參數不須寫滿，不寫滿的地方的值為預設值。
+\subsection{迭代器}
+如果你想在容器中遍歷，你可能想用下標運算子`[]`，但不是所有容器都像陣列，都有支援下標運算子，所以C++為每個容器都提供一個資料型態叫"迭代器"，你可以把迭代器當成一種指標，假設有一個迭代器it，加上星號`*`可以存取IT所指向的內容，依據迭代器的強到弱可分為三種：
+\begin{enumerate}
+\item 隨機存取(Random Access)：可與整數做+-法、遞增及遞減
+\item 雙向（Bidirectional）迭代器：遞增及遞減
+\item 單向（Forward）迭代器：只能遞增
+\end{enumerate}
+根據用法可分為兩種：
+\begin{enumerate}
+\item 輸入（Input）迭代器：讀取迭代器指向的內容，，所有的迭代器都可以當作輸入迭代器。
+\item 輸出（Output）迭代器：更改迭代器指向的內容時，除了常數（const）迭代器（也就是規定不能更動迭代器指向的內容）以外，所有的迭代器都可以當作輸出迭代器。
+\end{enumerate}
+C++在許多容器中提供正向和逆向迭代器，前者由前往後，後著由後往前，宣告時分別為$C::iterator$及$ C::reverse\_iterator$，每種迭代器分別有一對迭代器代表頭尾，如下表，注意end系列指向該容器最後一項的後一項，不要對他做人和取值或修改。\\ \\
+\begin{tabular}{|l|c|c|}
+	\hline &正向&逆向 \\
+	\hline 可改值&C.begin()\ C.end()&C.rbegin()\ C.rend()\\
+	\hline 不可改值&C.cbegin()\ C.cend()&C.crbegin()\ C.crend()\\
+    \hline
+\end{tabular}
+\subsection{stack 堆疊}
+有兩個端口，其中一個封閉，另一個端口負責插入、刪除的資料結構
+\lstinputlisting{BasicDS/stack.cpp}
+\begin{enumerate}
+\item 標頭檔：<stack>
+\item 建構式：stack <T> s
+\item s.push(T a)：插入頂端元素，複雜度$O(1)$
+\item s.pop()：刪除頂端元素，複雜度$O(1)$
+\item s.top()：回傳頂端元素，複雜度$O(1)$
+\item s.size()：回傳元素個數，複雜度$O(1)$
+\item s.empty()：回傳是否為空，複雜度$O(1)$
+\end{enumerate}
+\lstinputlisting{BasicDS/stack2.cpp}
+\subsection{queue 佇列} 
+有兩個端口，一個負責插入，另一個端口負責刪除的資料結構
+\lstinputlisting{BasicDS/queue.cpp}
+\begin{enumerate}
+\item 標頭檔：<queue>
+\item 建構式：queue <T> q
+\item q.push(T a)：插入尾端元素，複雜度$O(1)$
+\item q.pop()：刪除頂端元素，複雜度$O(1)$
+\item q.front()：回傳頂端元素，複雜度$O(1)$
+\item q.size()：回傳元素個數，複雜度$O(1)$
+\item q.empty()：回傳是否為空，複雜度$O(1)$
+\end{enumerate}
+\lstinputlisting{BasicDS/queue2.cpp}
+\subsection{deque 雙向佇列} 
+有兩個端口，皆負責刪除、插入的資料結構
+\begin{enumerate}
+\item 標頭檔：<deque>
+\item 建構式：deque <T> dq
+\item dq.push\_front(T a),dq.push\_back(T a)：插入頂端/尾端元素，複雜度$O(1)$
+\item dq.pop\_front(),dq.pop\_back()：刪除頂端/尾端元素，複雜度$O(1)$
+\item dq.front(),dq.back()：回傳頂端/尾端元素，複雜度$O(1)$
+\item dq.size()：回傳元素個數，複雜度$O(1)$
+\item dq.empty()：回傳是否為空，複雜度$O(1)$
+\end{enumerate}
+\subsection{list}
+陣列如果要從中間插入一個元素，需要將其後面所有元素搬移一格，需耗費$O(n)$，連結串列(linklist)能只花$O(1)$完成插入。
+\lstinputlisting{BasicDS/linklist1.cpp}
+\lstinputlisting{BasicDS/linklist2.cpp}
+C++提供list函式庫實作雙向串列
+\begin{enumerate}
+\item 標頭檔：`<list>`
+\item 建構式：`list <T> L`
+\item L.size()：回傳元素個數，複雜度$O(1)$
+\item L.empty()：回傳是否為空，複雜度$O(1)$
+\item L.push\_front(T a),L.push\_back(T a)：插入頂端/尾端元素，複雜度$O(1)$
+\item L.pop\_front(),L.pop\_back()：刪除頂端/尾端元素，複雜度$O(1)$
+\item L.insert(iterator it,size\_type n,T a):在 it 指的那項的前面插入 n 個 a 並回傳指向 a 的迭代器。複雜度 $O(n)$。
+\item L.erase(iterator first,iterator last):把 $[first,last)$ 指到的東西全部刪掉,回傳 last。複雜度與砍掉的數量呈線性關係,如果沒有指定 last,那會自動視為只刪除 first 那項。
+\item L.splice(iterator it,list\& x,iterator first,iterator last):first 和 last 是 x 的迭代器。此函式會把 $[first,last)$ 指到的東西從 x 中剪下並加到 it 所指的那項的前面。x 會因為這項函式而改變。若未指定 last,那只會將 first 所指的東西移到 it 前方。複雜度與轉移個數呈線性關係。
+\end{enumerate}
+\lstinputlisting{BasicDS/list.cpp}
+\subsection{array}
+更安全方便的陣列
+\begin{enumerate}
+\item 標頭檔：<array>
+\item 建構式：array <T,N> a
+\item a.size()：回傳元素個數，複雜度$O(1)$
+\item a.fill(T val)：將每個元素皆設為val，複雜度$O(size)$
+\end{enumerate}
+\lstinputlisting{BasicDS/array.cpp}
+\subsection{vector}
+動態陣列，可改變長度
+\begin{enumerate}
+\item 標頭檔：<vector>
+\item 建構式：vector <T> v
+\item v[i]：回傳v的第i個元素，複雜度$O(1)$
+\item v.push\_back(T a)：插入尾端元素，複雜度$O(1)$
+\item v.size()：回傳元素個數，複雜度$O(1)$
+\item v.resize()：重設長度，複雜度$O(1)$
+\item v.clear()：清除元素，複雜度$O(size)$
+\item 兩特化
+    \begin{enumerate}
+    \item vector<char>：string
+    \item vector<bool>：bitset
+    \end{enumerate}
+\end{enumerate}
+\lstinputlisting{BasicDS/vector.cpp}
+\subsection{string} 
+可變動長度的字元陣列
+\begin{enumerate}
+\item 標頭檔：<string>
+\item 建構式：string s
+\item s=t：讓s的內容和t一樣，複雜度通常是$O(size(s)+size(t))$
+\item s+=t：將t加到s後面，複雜度通常是$O(size(s)+size(t))$
+\item s.cstr()：回傳和s一樣的C式字串，複雜度$O(1)$
+\item cin>>s：輸入字串至s，直到讀到不可見字元
+\item cout<<s：輸出字串s
+\item getline(cin,s,char c)：輸入s直到遇到字元c，未指定c時，c為預設字元。
+\end{enumerate}
+\lstinputlisting{BasicDS/string.cpp}
+\subsection{bitset} 
+節省的bool陣列，可當二進位位元運算
+\begin{enumerate}
+\item 標頭檔：<bitset>
+\item 建構式：bitset <N> b(a)
+\item b[a]:存取第 a 位,複雜度 $O(1)$。
+\item b.set():將所有位元設成1。複雜度 $O(N)$。
+\item b.reset():將所有位元設成 0。複雜度 $O(N)$。
+\item b(位元運算):不管是一元、二元運算皆可。二元位元運算長度需一致。複雜度 $O(N)$。
+\item b.count():回傳 b 有幾個位元是 1。複雜度 $O(N)$。
+\item b.flip():將所有位元的 0、1 互換。複雜度 $O(N)$。
+\item b.to\_string():回傳一個字串和 b 的內容一樣。複雜度 $O(N)$。
+\item b.to\_ulong():回傳一個 unsigned long 和 b 的內容一樣 (在沒有溢位的範圍內)。複雜度，$O(N)$。
+\item b.to\_ullong():回傳一個 unsigned long long 和 b 的內容一樣 (在沒有溢位的範圍內)，複雜度 $O(N)$。
+\end{enumerate}
+\subsection{priorty\_queue 優先佇列} 
+維護最大/小值，可插入、刪除、及詢問最大/小值，一種實作為binary heap
+\lstinputlisting{BasicDS/heap.cpp}
+\begin{enumerate}
+\item 標頭檔：<queue>
+\item 建構式：priorty\_queue <T> pq
+\item 建構式：priorty\_queue <T,Con,Cmp> pq
+\item 建構式：priorty\_queue <T,Con,Cmp> pq(iterator first, iterator seecond)插入$[first,second)$內的東西
+\item pq.push(T a)：插入元素a，複雜度$O(\log size)$
+\item pq.pop()：刪除頂端元素，複雜度$O(\log size)$
+\item pq.top()：回傳頂端元素，複雜度$O(1)$
+\item pq.size()：回傳元素個數，複雜度$O(1)$
+\item pq.empty()：回傳是否為空，複雜度$O(1)$
+\end{enumerate}
+\lstinputlisting{BasicDS/PQ.cpp}
+\subsection{pair} 
+兩個資料型態組織合盟
+\begin{enumerate}
+\item 標頭檔：`<utility>`
+\item 建構式：`pair <T1,T2> p`
+\item p.first,p.second：p的第一、二個值
+\item make\_pair(T1 a1,T2 a2)：回傳一個(a1,a2)的pair
+\end{enumerate}
+\subsection{tuple} 
+generalize的pair
+\begin{enumerate}
+\item 標頭檔：`<tuple>`
+\item 建構式：tuple<T1,T2...> t
+\item `get<i>(t)`：回傳 t 的第 i 個值。
+\item make\_tuple(T1 a1,T2 a2,...)：回傳一個 (a1,a2,...)的tuple。
+\end{enumerate}
+\subsection{set/map 自查找平衡二元樹} 
+\begin{enumerate}
+\item set和map支援插入、刪除及查詢一個值，不同的是，set會 
+\item 也可以說set的鍵值和對應值一樣
+\end{enumerate} 
+\subsection{set} 
+\begin{enumerate}
+\item 標頭檔：`<set>`
+\item 建構式：`set <T1> s`
+\item s.size()：回傳元素個數，複雜度$O(1)$
+\item s.empty()：回傳是否為空，複雜度$O(1)$
+\item s.clear()：清除元素，複雜度$O(size)$
+\item s.insert(T1 a)：加入元素 a,複雜度 $O(\log size)$。
+\item s.erase(iterator first,iterator last)：刪除 $[first,last)$,若沒有指定 last 則只刪除 first,複雜度$O(\log size)$與加上元素個數有關係。
+\item s.erase(T1 a)：刪除鍵值 a,複雜度 $O(\log size)$。
+\item s.find(T1 a)：回傳指向鍵值 a 的迭代器,若不存在則回傳 s.end(),複雜度 $O(\log size)$。
+\item s.lower\_bound(T1 a)：回傳指向第一個鍵值大於等於 a 的迭代器。複雜度 $O(\log size)$。
+\item s.upper\_bound(T1 a)：回傳指向第一個鍵值大於 a 的迭代器。複雜度 $O(\log size)$。
+\end{enumerate}
+\lstinputlisting{BasicDS/set.cpp}
+\subsection{map}
+\begin{enumerate}
+\item 標頭檔：`<map>`
+\item 建構式：`map <T1, T2> m`
+\item m.size(),m.empty(),m.clear(),m.erase(iterator first,iterator last),m.erase(T1 a),m.find(T1 a),m.lower\_bound(T1 a),m.upper\_bound(T1 a)：同 set。
+\item `m[a]`：存取鍵值 a 對應的值,若 a 沒有對應的值,會插入一個元素,使 a 對應到預設值並回傳之。複雜度 $O(\log size)$。
+\item m.insert(pair<T1,T2> a)：若沒有鍵值為 a.first 的值,插入一個鍵值為 a.first 的值對應到a.second,並回傳一個 pair,first 是指向剛插入的元素的迭代器、second 是 true;若已經有了,回傳一個 pair,first 是指向鍵值為 k.first 的元素的迭代器,second 是 false。複雜度 $O(\log size)$。
+\lstinputlisting{BasicDS/map.cpp}
+\end{enumerate}
+\subsubsection{multi-系列}
+可插入重複元素代價為map無法用下標運算子
+\begin{enumerate}
+\item equal\_range(T1 a)：回傳iterator的pair<lower\_bound(a),upper\_bound(a)>，為a所在範圍
+\item erase(T1 a)：刪除所有元素a，如果只要刪除一個，用s.erase(s.find(a))
+\end{enumerate}
+\subsubsection{unorder\_系列}
+降低常數，期望複雜度少一個 log，代價為不會排序，沒有lower\_bound/upper\_bound，也不會依鍵值大小遍歷。迭代器為單向。
+
+
+
+
+
+
+
+
