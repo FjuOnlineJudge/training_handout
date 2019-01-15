@@ -33,6 +33,13 @@ DP通常會被定義成一個算出答案的函數，函數的參數個數可變
 如果一個DP式只會用到臨近的項數，就可以捨棄其他用不到的，藉此壓縮空間。
 例如：費式數列只會用到前兩項，我們就用取餘數來實作滾動陣列，注意被餘數要保持正數。
 \lstinputlisting{DP/fib04.cpp}
+\subsection{題目}
+\begin{enumerate}
+\item UVa10003(區間DP)
+\item UVa10285
+\item zerojudge d212
+\item UVa11310
+\end{enumerate}
 接下來我們談論一些經典問體
 \subsection{背包問題}
 背包問題中，會給你背包的容量C，以及N樣物品，它們有不同的重量w和價值v，背包裡物品價值總和最大為何?
@@ -68,6 +75,14 @@ DP通常會被定義成一個算出答案的函數，函數的參數個數可變
 我們一樣由01背包延伸，一樣物品最多可以放$a_i$個，那麼迴圈最多要跑$a_i$次，這樣整體時間複雜度為$O(NC\Sigma a_i)$。\\
 有限背包又沒有像無限背包那麼好的性質，但如果我們帶入二進位的觀念，第$i$位代表$2^{i-1}$，我們把$a_i$個物品拆成$1,2,4...,2^k$次方個枚舉，那麼我們可以將時間複雜度降為$O(NC\Sigma(\log a_i))$
 講道更進階一點的DP，會學到"單調堆列優化"，能將時間複雜度降為$O(NC)$
+\subsection{題目}
+\begin{enumerate}
+\item zerojudge b184(01背包)
+\item UVa10664(01背包)
+\item UVa10898(無限背包)
+\item Uva10086(有限背包)
+\item TIOJ 1387(有限背包)
+\end{enumerate}
 \subsection{最長共同子序列 (Longest Common Subsequence)}
 子序列是指一個序列去除某些元素後所形成的新序列(當然也可以不刪除任何東西)，而所謂的最長共同子序列，則是要求兩個字串去除元素後變成相同的序列，最長可以為何。這題觀念是簡單的，在這裡就列出dp式供讀者自行解讀。
 \begin{enumerate}
@@ -78,6 +93,7 @@ max(dp[i-1][j],dp[i][j-1]) & else
 \end{array} \right\}$
 \item 基底：$dp[i][0]=dp[0][i]=0$ when $i \geq 0$
 \end{enumerate}
+\subsection{題目}
 \subsection{最長遞增子序列 (Longest Increasing Subsequence)}
 給你一個序列長度為N，求最長遞增子序列的長度。\\
 你可能會在其他地方看見一維DP式，在這裡不提，有興趣可以去演算法筆記看，這裡要介紹另一種DP式
@@ -92,3 +108,9 @@ dp[n-1][i] & else
 時間複雜度為$O(n^2)$。\\
 再來，我們令$g[i]=dp[x][i]$, where $1\leq x \leq N$，我們會發現$g[i]$為一個嚴格遞減序列，而且改的數字剛好的$a[i]$，更妙的是，被改的數字為$lower_bound(a[i])$，我們就可以用二分搜來得到$O(n\log n)$的演算法了。
 \lstinputlisting{DP/LIS.cpp}
+\subsection{題目}
+\begin{enumerate}
+\item Uva10405(LCS)
+\item UVa11456(LIS)
+\item UVa11790(LIS)
+\end{enumerate}
