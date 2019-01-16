@@ -6,7 +6,7 @@ int main(){
             cin>>x;
             if(!v.size()||x>v.back())v.push_back(x);
             else *lower_bound(v.begin(), v.end(),x)=x;
+            dp[i]=v.size();
         }
-        cout<<v.size()<<'\n';
     }
 }
