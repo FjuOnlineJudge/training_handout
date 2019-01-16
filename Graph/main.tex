@@ -1,1 +1,130 @@
 \section{Graph}
+圖是由邊集合和點集合所形成的圖形，這種圖形通常用來描述某些事物之間的某種特定關係。頂點用於代表事物，連接兩頂點的邊則用於表示兩個事物間具有這種關係。\\
+數學式為$G=(V,E)$。$G$代表圖(Graph)，$V$代表點(vertex)，$E$代表邊(edge)。
+\subsection{術語}
+在深入圖論中，我們先介紹一些術語，這些術語在後面的內容，不時會扮演著關鍵角色。
+\begin{enumerate}
+\item 無向邊、有向邊：邊具有方向性，無向邊代表邊沒有指定方向，$(u,v)$和$(v,u)$等價；有向邊則有指定方向，$(u,v)$和$(v,u)$是不同的。
+\item 無向圖、有向圖、混合圖：無向圖是只有無向邊的圖，類似地，有向圖是只有有向邊的圖，混和圖則是包含無向邊和有向邊。
+\item 點、邊個數：一般來說會用$|V|$、$|E|$來表示，在表示複雜度時，為了方便會用$V$、$E$來表示
+\item 權重(weight)：在點或邊上附帶一個數字稱做"權重"，邊上權重較常見，權重通常代表代價，例如所需花費時間或金錢。
+\item 相鄰 (adjacent):無向圖中,兩個點 $u$, $v$ 相鄰代表存在一個邊 $e_i = (u, v)$。
+\item 指向 (consecutive):有向圖中, $u$ 指向 $v$ 代表存在一個邊 $e_i = (u, v)$。
+\item 度(degree)：無向圖中，一個點連到的邊數稱為"度"，在有向圖稱為出度(out-degree，簡稱 $d_{out}$)及入度(in-degree，簡稱 $d_{in}$)，分別代表該點指向別點及被指向的邊數。
+\item walk：一條由$x$到$y$的路徑$x=v_1,v_2,v_3...,v_k=y$。
+\item trail：一條不重複邊的walk。
+\item 迴路(circut)：起點和終點一樣的trail。
+\item path：一條不重複點(起點和終點例外)的walk。
+\item 環(cycle)：起點和終點一樣的path。
+\item 自環 (loop):一條邊 $e_i = (u, v)$ 滿足 $u = v$,$e_i$ 即稱為自環。
+\item 重邊 (multiple edge):在一張圖中,存在 $e_i$, $e_j$ 滿足 $i$ != $j$ and $e_i = e_j$，則稱為重邊。
+\item 連通 (connected):無向圖中,若 $u$ 和 $v$ 存在路徑,則 $u$ 和 $v$ 連通。若一群點兩兩連通,則這些點都連通。
+\end{enumerate}
+\subsection{儲存}
+至於圖要怎麼存起來呢，以下介紹兩種辦法。設$V$為點數，$E$為邊數。
+\subsubsection{相鄰矩陣(adjacency matrix)}：開一個 $V \times V$ 的資料結構$M$(通常會用二維陣列)，$M[a][b]$代表的是點$a$至$b$的邊數或權重。空間複雜度$O(V^2)$。加、刪邊時間複雜度 $O(1)$。
+\subsubsection{相鄰串列(adjacency list)}：開$V$個可變長度的資料結構 (通常在 C++ 用 vector、在C用 linked list),第$i$個裡面放所有第$i$個點指向的點的編號 (和邊權或其他邊的資訊)。空間複雜度$O(V + E)$,加邊時間複雜度$O(1)$、刪邊時間複雜度$O(V)$。
+至於使用時機，如果邊數較密，且頻繁地需要找尋兩點之間的權重，那麼相鄰矩陣比較適合，其餘情況則是用相鄰串列。
+\subsection{遍歷}
+存好圖後，為了獲得某些資訊，需要一些讀取的方法，這些方法我們叫做"遍歷"。以下介紹兩種方法：DFS和BFS。
+\subsubsection{DFS}
+找到一條新的路就繼續找下去，直到沒有新的路時，原地返回。通常用遞迴實作或用stack維護。
+\lstinputlisting{Graph/DFS.cpp}
+\subsubsection{BFS}
+\lstinputlisting{Graph/BFS.cpp}
+把所有看到的路都加入清單中，並且以加入的順序來遍歷。通常以queue來維護。\\
+BFS和DFS的時間複雜度皆為$O(V+E)$，空間複雜度皆為$O(V)$。\\
+注意，圖不一定完全連通，我們通常會另外開一個陣列(bitset)紀錄是否拜訪過。
+\subsection{樹}
+樹是一種特殊的圖，有許多算法都是由樹發展出來。
+\subsubsection{特性}
+以下這些無向圖的敘述都是在表示樹，這些敘述在競賽中有時能引導出答案。
+\begin{enumerate}
+\item 為連通圖且$|V|=|E|+1$
+\item 任意兩個點之間存在唯一路徑
+\item 為連通圖，但拔掉一條邊即為不連通(分成兩張連通圖)。
+\item 沒有環，但加上一條邊會形成環。
+\item 若節點編號存在順序，除了第一個節點，每個節點都會伸出一條邊連到順序比自己前面的節點。
+\end{enumerate}
+\subsubsection{術語}
+樹同樣也有一些術語要知道的。
+\begin{enumerate}
+\item 根(root)：樹的一個代表性的點，通常會被當遍歷的起點，有給定根點的樹叫"有根樹"。至於無根樹依照題目需求，有時要隨機找一個點當根。
+\item 葉解點(leaf)：度數為1的節點，有根樹的根結點則會是題目需求來決定是否為葉節點。
+\item 父節點、子節點：有根樹中，兩個相連的節點，比較接近樹根的為父節點，反之為子節點。
+\item 祖先(ancestor)、子孫(descandent)：有根樹中，節點到根結點中，所有的節點皆為祖先。反過來說，該節點是他的祖先的子孫。依題目所需，有時自己也是自己的祖先(尤其是根最常這樣定義)。
+\item 距離(distance)：為兩個點所形成路徑之邊數，或是路徑上權重之和。
+\item 深度(depth)：有根樹中，節點到根結點之距離。
+\item 高度(height)：有根樹中，節點到與它距離最大的葉節點的距離稱為高度。根的高度稱為這整顆樹的高度。
+\item 子樹(subtree)：設有兩棵樹$T$,$T_1$，如果$V_1\in V$，$E_1\in E$，那麼我們說 $T_1$ 為 $T$ 的子樹
+\item N元樹：每個節點最多有N個節點，稱為N元樹。
+\end{enumerate}
+\subsection{二元樹}
+二元樹在程式競賽中常常被討論，有許多資料結構都是二元樹，例如STL提到的heap。
+\subsubsection{遍歷}
+基於根結點遍歷順序，二元樹的遍歷有"前序、中序、後序"三種辦法，通常DFS會使用前序來實作，如果想要得到任何一種順序的結果，只要改變輸出的順序。
+\subsubsection{二元搜尋樹(Binary Search Tree, BST)}
+二元搜尋樹是二元樹的應用，利用遞迴方式來定義，如下：
+\begin{enumerate}
+\item 根結點的值大於左子節點的值，小於右子節點的值。
+\item 其左右子樹亦為二元搜尋樹。
+\end{enumerate}
+用上敘定義，就可以建造出BST，不過如果我們將一個以排序的串列建成BST，會發現BST會"退化"成一條傾斜的串列。BST本身不實用，重要在於它的推廣結構，例如AVL樹、紅黑樹、treap，不過這些資料結構比較進階，在這裡先不提。
+\subsection{並查集}
+並查集是一種樹狀結構，他支援兩件事
+\begin{enumerate}
+\item 查詢所隸屬集合
+\item 合併兩個集合
+\end{enumerate}
+我們把集合轉化成樹，一顆樹代表一個集合，樹根代表集合的老大，查詢隸屬集合就回傳樹根是誰(一個樹餔可能有兩顆樹根吧)，合併的時侯，就把一顆樹的樹根只到另一顆，以下為詳細的描述。
+\subsubsection{初始}
+一開始的時候，每個點自成一個集合，所以把樹根都設為自己。
+\subsubsection{查詢}
+查詢的時候，要查到樹根為自己的點，為止否則的話就要繼續查。
+\subsubsection{狀態壓縮}
+在合併之後原本被指向的樹根就沒用了，我們可以一邊做查詢時，一邊做更新。
+\subsubsection{啟發式合併}
+建立一個$h[i]$代表樹的高度，亦是元素最大遞迴次數，$h[i]$一開始為1。再來，我們每次都讓高度小的高度大的合併，如果遇到高度一樣的，就讓合併別人的樹高度加1。如果要把高度變為x，則至少需要$2^x$個點，由此推出N個點所形成最高之高度為$\log(N)$。\\
+\lstinputlisting{Graph/DisjointSet.cpp}
+複雜度為$O(\alpha(N))$。並查集最常用的地方是最小生成樹的Kruskal’s algorithm。
+\subsection{最小生成樹(Minimun Spanning Tree, MST)}
+在一張圖中，如果有子圖剛好維也為一顆樹，我們就稱該子圖為生成樹。現在我們在圖上加上權重，而在所有的生成樹中，權重最小的，我們稱為"最小生成樹"，最小生成樹並不唯一，以下介紹幾種最小生成樹的演算法。
+\subsubsection{Kruskal’s algorithm}
+Kruskal’s algorithm的概念是，合併兩顆MST的時候，加入連接兩顆樹中，最小權重的邊。所以我們就利用greedy，將邊依權重由小到大排序，如果邊的兩邊是在不同的MST，我們就把合併(並查集應用於此)，反之就跳過。排序需花$O(E\log E)$的時間，選邊需要花$O(E\alpha(V))$的時間，總共時間複雜度$O(E(\log E+\alpha(V)))$
+\lstinputlisting{Graph/Kruskal.cpp}
+\subsubsection{Prim’s algorithm}
+Prim’s algorithm的思維則是，將一棵MST連出的邊中，加入權重最小的邊(距離最近的點)，重複執行後得出最小的生成樹。在實作上，首先取一個點當MST，更新所有與它相鄰的點，更新後把距離最小的點加入MST(不用並查集)，持續執行更新及加入點的動作，直到所有點都已加入MST。維護最小距離用priority\_queue維護，每個點只會被合併一次，每條邊都只會遍歷一次，複雜度$O((V+E)logE)$。另外有一個資料結構用費波那契堆(fibonacci heap)可以達到 $O(E+V\log V)$。但是因為它常數比較大，實作複雜，我們不會使用它。總體而言，Kruskal比Prim好用。
+\subsubsection{Borůvka’s algorithm}
+Borůvka’s algorithm和Prim一樣都在加入MST和最鄰近的點，不一樣的是，它讓所有的MST一起做這件事。每次找出每棵MST外權重最小的邊，並加入MST(如果權重一樣，就找索引值最小的)，檢查是否只剩一棵MST，如果不是就重複掃描的動作，這裡一樣用並查集維護聯通性。\\
+最差的情況為每次都剛好兩兩成對合併，這樣最多只會執行$\log V$次，整題複雜度為$O((V+E)\log V)$，f)。期望複雜度可以達到$O((V+E))$ (因為每次並查集都會被合併+查詢,所以$\alpha$可以完全省略)。
+\subsection{最短路徑}
+\subsubsection{術語}
+\begin{enumerate}
+\item 負邊：權重為負的邊
+\item 負環：權重和為負的環
+\item 點源：成為起點的點，分成單源頭及多源頭。
+\item 鬆弛：單源頭最短路徑中，對於任意兩個點$u,v$，起點$s$到它們的距離$d_u,d_v$，如果$d_u>d_v+w_{u,v}$，$w_{u,v}$為邊$(u,v)$的權重，我們可以讓$d_u$更新為$d_v+w_{u,v}$，讓$s$到$u$的距離縮短，這個動作稱為"鬆弛"。 
+\end{enumerate}
+\subsubsection{Floyd-Warshall Algorithm}
+為多源頭最短路徑，求出所有點對的最短路徑。\\
+Floyd-Warshall是動態規劃，以下是他的dp式。
+\begin{enumerate}
+\item 狀態：$dp[k][i][j]$ 代表,若只以點 $1 ∼ k$ 當中繼點的話,則 $dp[k][i][j]$ 為 $i$ 到 $j$ 的最短路徑長。
+\item 轉移：$dp[k][i][j] = min(dp[k − 1][i][k] + dp[k − 1][k][j], dp[k − 1][i][j])$
+\item 基底：$dp[0][i][j] = \left\{ \begin{array}{cc}
+w[i][j] & if\ w[i][j]\ exists\\
+INF & else
+\end{array} \right\}$
+\end{enumerate}
+時/空間複雜度皆為$O(V^3)$，然而此DP是可以滾動，所以空間複雜度可降為$O(V^2)$\\
+\lstinputlisting{Graph/FW.cpp}
+執行的時候如果$dp[i][j]<0$，代表存在負環，Floyd-Warshall是可以判斷負環。
+\subsubsection{單點源最短路徑}
+求出一個點到所有點的最短路徑，其實就是以起點為根，最短路徑是由父節點鬆弛而來的最短路徑樹。我們找最短路徑，就是一直把鬆弛，直到所有點都不能鬆弛，所有點都獲得最短路徑了。要蓋出最短路徑樹，就只要把點指向最後一次被誰鬆弛就好了。
+\subsubsection{Bellman-Ford Algorithm}
+為單點源最短路徑，設起點的最短路徑為0，其他點為無限大，每次枚舉所有邊枚舉，因為最短路徑不會經過同樣的邊第二次，所以只要執行$V-1$輪，複雜度為$O(VE)$。如果執行第V次時還有邊可以鬆弛，代表有負環，Bellman-Ford也可以當成負環的判斷方法。\\
+\lstinputlisting{Graph/bellmanford.cpp}
+此演算法還有一個優化版本叫做Shortest Path Faster Algorithm(SPFA)，他的做法是枚舉起點是鬆弛過的邊，以鬆弛過的點除非被重新鬆弛，否則不會更動。預期複雜度為$O(V+E)$，不過最差狀況仍為$O(VE)$。
+\subsubsection{Dijkstra’s Algorithm}
+同樣為單點源最短路徑，他的想法和Prim's Algorithm類似，每次把離樹根最近的點加入最短路徑樹裡，並把所有與該點相連的邊鬆弛，已經加入的點不會在被鬆弛。使用priority\_queue的複雜度為$(V+E)\log E$，使用費波那契堆，複雜度為s$O(E+V\log V)$
+\lstinputlisting{Graph/dijkstra.cpp}
