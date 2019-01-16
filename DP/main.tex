@@ -1,4 +1,5 @@
 \section{DP}
+DP和遞迴一樣，會把問題分解成子問題，不同的是DP同樣的子問題會重複，這時會以"時間換取空間"的方式，把答案存起來，之後用到時不用再次進行計算。
 \subsection{特性}
 \begin{enumerate}
 \item 重複子問題：相同的一個子問題,需要多次查詢。
@@ -11,8 +12,8 @@ DP通常會被定義成一個算出答案的函數，函數的參數個數可變
 \item 訂出狀態
 \item 導出轉移：從一個子問題的答案推到另一個
 \item 設好基底：有些問題明顯有答案(也許無解)，就直接算出答案
-而時間複雜度，通常就會是「使用到的狀態個數」乘上「轉移時間」了。
 \end{enumerate}
+而時間複雜度，通常就會是「使用到的狀態個數」乘上「轉移時間」了。
 \subsection{費式數列}
 費式數列是個看到膩的數列，我們就把他的DP式列出來
 \begin{enumerate}
@@ -75,7 +76,7 @@ DP通常會被定義成一個算出答案的函數，函數的參數個數可變
 我們一樣由01背包延伸，一樣物品最多可以放$a_i$個，那麼迴圈最多要跑$a_i$次，這樣整體時間複雜度為$O(NC\Sigma a_i)$。\\
 有限背包又沒有像無限背包那麼好的性質，但如果我們帶入二進位的觀念，第$i$位代表$2^{i-1}$，我們把$a_i$個物品拆成$1,2,4...,2^k$次方個枚舉，那麼我們可以將時間複雜度降為$O(NC\Sigma(\log a_i))$
 講道更進階一點的DP，會學到"單調堆列優化"，能將時間複雜度降為$O(NC)$
-\subsection{題目}
+\subsubsection{題目}
 \begin{enumerate}
 \item zerojudge b184(01背包)
 \item UVa10664(01背包)
@@ -93,7 +94,10 @@ max(dp[i-1][j],dp[i][j-1]) & else
 \end{array} \right\}$
 \item 基底：$dp[i][0]=dp[0][i]=0$ when $i \geq 0$
 \end{enumerate}
-\subsection{題目}
+\subsubsection{題目}
+\begin{enumerate}
+\item Uva10405(LCS)
+\end{enumerate}
 \subsection{最長遞增子序列 (Longest Increasing Subsequence)}
 給你一個序列長度為N，求最長遞增子序列的長度。\\
 你可能會在其他地方看見一維DP式，在這裡不提，有興趣可以去演算法筆記看，這裡要介紹另一種DP式
@@ -108,9 +112,8 @@ dp[n-1][i] & else
 時間複雜度為$O(n^2)$。\\
 再來，我們令$g[i]=dp[x][i]$, where $1\leq x \leq N$，我們會發現$g[i]$為一個嚴格遞減序列，而且改的數字剛好的$a[i]$，更妙的是，被改的數字為$lower_bound(a[i])$，我們就可以用二分搜來得到$O(n\log n)$的演算法了。
 \lstinputlisting{DP/LIS.cpp}
-\subsection{題目}
+\subsubsection{題目}
 \begin{enumerate}
-\item Uva10405(LCS)
 \item UVa11456(LIS)
 \item UVa11790(LIS)
 \end{enumerate}
