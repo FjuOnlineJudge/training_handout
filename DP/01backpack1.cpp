@@ -1,4 +1,4 @@
-dp[N][C];
+int dp[N][C];
 memset(dp,-INF,sizeof(dp));
 dp[0][0]=0;
 for(int i=0;i<N;i++){
