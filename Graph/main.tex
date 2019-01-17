@@ -35,6 +35,13 @@
 把所有看到的路都加入清單中，並且以加入的順序來遍歷。通常以queue來維護。\\
 BFS和DFS的時間複雜度皆為$O(V+E)$，空間複雜度皆為$O(V)$。\\
 注意，圖不一定完全連通，我們通常會另外開一個陣列(bitset)紀錄是否拜訪過。
+\subsubsection{題目}
+\begin{enumerate}
+\item zerojudge a290(給你一張有向圖，問你可不可以由A走到B)
+\item zerojudge a982(二維迷宮問題)
+\item zerojudge a634(馬步問題)
+\item UVa 572
+\end{enumerate}
 \subsection{樹}
 樹是一種特殊的圖，有許多算法都是由樹發展出來。
 \subsubsection{特性}
@@ -87,6 +94,13 @@ BFS和DFS的時間複雜度皆為$O(V+E)$，空間複雜度皆為$O(V)$。\\
 建立一個$h[i]$代表樹的高度，亦是元素最大遞迴次數，$h[i]$一開始為1。再來，我們每次都讓高度小的高度大的合併，如果遇到高度一樣的，就讓合併別人的樹高度加1。如果要把高度變為x，則至少需要$2^x$個點，由此推出N個點所形成最高之高度為$\log(N)$。\\
 \lstinputlisting{Graph/DisjointSet.cpp}
 複雜度為$O(\alpha(N))$。並查集最常用的地方是最小生成樹的Kruskal’s algorithm。
+\subsubsection{題目}
+\begin{enumerate}
+\item zerojudge d808
+\item UVa 1160
+\item UVa 10158(陣列開兩倍)
+\item UVa 1329(帶權並查集)
+\end{enumerate}
 \subsection{最小生成樹(Minimun Spanning Tree, MST)}
 在一張圖中，如果有子圖剛好維也為一顆樹，我們就稱該子圖為生成樹。現在我們在圖上加上權重，而在所有的生成樹中，權重最小的，我們稱為"最小生成樹"，最小生成樹並不唯一，以下介紹幾種最小生成樹的演算法。
 \subsubsection{Kruskal’s algorithm}
@@ -97,6 +111,10 @@ Prim’s algorithm的思維則是，將一棵MST連出的邊中，加入權重�
 \subsubsection{Borůvka’s algorithm}
 Borůvka’s algorithm和Prim一樣都在加入MST和最鄰近的點，不一樣的是，它讓所有的MST一起做這件事。每次找出每棵MST外權重最小的邊，並加入MST(如果權重一樣，就找索引值最小的)，檢查是否只剩一棵MST，如果不是就重複掃描的動作，這裡一樣用並查集維護聯通性。\\
 最差的情況為每次都剛好兩兩成對合併，這樣最多只會執行$\log V$次，整題複雜度為$O((V+E)\log V)$，f)。期望複雜度可以達到$O((V+E))$ (因為每次並查集都會被合併+查詢,所以$\alpha$可以完全省略)。
+\subsubsection{題目}
+\begin{enumerate}
+\item zerojudge a129
+\end{enumerate}
 \subsection{最短路徑}
 \subsubsection{術語}
 \begin{enumerate}
@@ -128,3 +146,10 @@ INF & else
 \subsubsection{Dijkstra’s Algorithm}
 同樣為單點源最短路徑，他的想法和Prim's Algorithm類似，每次把離樹根最近的點加入最短路徑樹裡，並把所有與該點相連的邊鬆弛，已經加入的點不會在被鬆弛。使用priority\_queue的複雜度為$(V+E)\log E$，使用費波那契堆，複雜度為s$O(E+V\log V)$
 \lstinputlisting{Graph/dijkstra.cpp}
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 534
+\item UVa 10048
+\item UVa 929(方格上)
+\item UVa 11090
+\end{enumerate}
