@@ -75,7 +75,7 @@ DP通常會被定義成一個算出答案的函數，函數的參數個數可變
 有限背包每樣物品能放限制最多可以放$a_i$個。這裡請讀者自己列出DP式。
 我們一樣由01背包延伸，一樣物品最多可以放$a_i$個，那麼迴圈最多要跑$a_i$次，這樣整體時間複雜度為$O(NC\Sigma a_i)$。\\
 有限背包又沒有像無限背包那麼好的性質，但如果我們帶入二進位的觀念，第$i$位代表$2^{i-1}$，我們把$a_i$個物品拆成$1,2,4...,2^k$次方個枚舉，那麼我們可以將時間複雜度降為$O(NC\Sigma(\log a_i))$
-講道更進階一點的DP，會學到"單調堆列優化"，能將時間複雜度降為$O(NC)$
+講道更進階一點的DP，會學到"單調隊列優化"，能將時間複雜度降為$O(NC)$
 \subsubsection{題目}
 \begin{enumerate}
 \item zerojudge b184(01背包)
@@ -107,7 +107,7 @@ max(dp[i-1][j],dp[i][j-1]) & else
 min(dp[n-1][i],a[n]) & if\ a[n]>dp[n-1][i-1]\\
 dp[n-1][i] & else
 \end{array} \right\}$
-\item 基底：$dp[i][0] = INF, dp[0][j] = −INF$ when $i \geq 0$ and $j \geq 1$
+\item 基底：$dp[0][0] = -INF, dp[0][i] = INF, dp[i][0]=don't$ $care$ when $i \geq 1$
 \end{enumerate}
 時間複雜度為$O(n^2)$。\\
 再來，我們令$g[i]=dp[x][i]$, where $1\leq x \leq N$，我們會發現$g[i]$為一個嚴格遞減序列，而且改的數字剛好的$a[i]$，更妙的是，被改的數字為$lower_bound(a[i])$，我們就可以用二分搜來得到$O(n\log n)$的演算法了。
