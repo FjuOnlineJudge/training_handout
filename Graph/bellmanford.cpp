@@ -12,7 +12,7 @@ void bellman_ford(int s){
         }
     }
 }
-void has_negative_cycle(){
+bool has_negative_cycle(){
     for(int i=0;i<V;i++){
         for(int j=0;j<V;j++){
             if(d[i]+w[i][j]<d[j])return true;
