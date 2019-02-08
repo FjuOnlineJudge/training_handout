@@ -1,0 +1,31 @@
+\section{數論}
+\subsection{質數}
+質數問題在程式競賽中常常遇到，通會建立質數表來查詢質數。
+\subsubsection{一般篩法}
+每找到一個數x，就知道2x, 3x, 4x...都不是質數，把他們從候選名單剃除。
+\lstinputlisting{Math/PrimeTable1.cpp}
+複雜度可到$O(N\log\log N)$，如果不從平方開始剃除，則會退化至$O(N\log N)$
+\subsubsection{線性篩法}
+將一般篩法優化至$O(N)$，我們期望每個合數都被其最小質因數剔除，這樣可以確保其均攤的線性。實作上，我們讓每一個數去提除"自己乘上$<=$其質因數的所有質數"的數字即可。
+\lstinputlisting{Math/PrimeTable2.cpp}
+\subsection{因數}
+\subsubsection{因數個數}
+
+\subsubsection{因數總和}
+
+\subsubsection{最大公因數和最小公倍數}
+
+\subsection{歐拉函數}
+
+\subsection{模}
+\subsubsection{性質}
+
+\subsubsection{模逆元}
+
+\subsubsection{中國剩餘定理}
+\subsection{快速冪}
+
+\subsection{一些關於質數的定理}
+\subsubsection{費馬小定理}
+\subsubsection{歐拉定理}
+\subsubsection{Wilson's theorem}
