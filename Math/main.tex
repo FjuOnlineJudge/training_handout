@@ -9,23 +9,64 @@
 將一般篩法優化至$O(N)$，我們期望每個合數都被其最小質因數剔除，這樣可以確保其均攤的線性。實作上，我們讓每一個數去提除"自己乘上$<=$其質因數的所有質數"的數字即可。
 \lstinputlisting{Math/PrimeTable2.cpp}
 \subsection{因數}
-\subsubsection{因數個數}
-
-\subsubsection{因數總和}
-
-\subsubsection{最大公因數和最小公倍數}
-
-\subsection{歐拉函數}
-
+我們能將任意一個正整數做質因數分解，形式為$N=P_{1}^{x_{1}}P_{2}^{x_{2}}P_{3}^{x_{3}}...=\Pi P_{i}^{x_{i}}$，根據此形式，我們可以求出任一正整數的因數個數及因數總和
+\begin{enumerate}
+\item [因數個數] $(x_{1}+1)(x_{2}+1)(x_{3}+1)...=\Pi (x_{i}+1)$
+\item [因數總和] $(P_{1}^{0}+P_{1}^{1}+...+P_{1}^{x_{1}})(P_{2}^{0}+P_{2}^{1}+...+P_{2}^{x_{2}})...=\Pi\Sigma_{j=0}^{x_{i}}(P_{i}^{j})$
+\end{enumerate}
+\subsection{最大公因數和最小公倍數}
+最大公因數(Greatest Common Divisor, GCD)，可以用輾轉相除法求得。
+\lstinputlisting{Math/GCD.cpp}
+C++有內建的\_\_gcd可以用。\\
+最小公倍數(Least Common Multiple,LCM)，則為兩數相乘再除以他們的GCD，為避免溢位狀況，可先將一數除以GCD，再乘以另外一數。
 \subsection{模}
 \subsubsection{性質}
-
+\begin{enumerate}
+\item [加法] $(a+b)\ \%\ p= (a\ \%\ p +b\ \%\ p )\ \%\ p $
+\item [減法] $(a-b)\ \%\ p= (a\ \%\ p -b\ \%\ p +p)\ \%\ p $
+\item [乘法] $(a*b)\ \%\ p= (a\ \%\ p *b\ \%\ p )\ \%\ p $
+\item [次方] $(a^b)\ \%\ p= ((a\ \%\ p )^b)\ \%\ p $
+\item [加法結合律] $((a+b)\ \%\ p+c)\ \%\ p = (a+(b+c))\ \%\ p $
+\item [乘法結合律] $((a*b)\ \%\ p*c)\ \%\ p = (a*(b*c))\ \%\ p $
+\item [加法交換律] $(a+b)\ \%\ p=(b+a)\ \%\ p$
+\item [乘法交換律] $(a*b)\ \%\ p=(b*a)\ \%\ p$
+\item [結合律] $((a+b)\ \%\ p*c)= ((a*c)\ \%\ p +(b*c)\ \%\ p )\ \%\ p $
+\end{enumerate}
+關於兩個同餘的數也有一些性質。\\
+參考文章：https://wangwilly.github.io/willywangkaa/2018/05/08/Discrete-mathematics-Chinese-Remainder-Theorem/
+\begin{enumerate}
+\item [整除性] $a\equiv b \quad (\mod m) \Rightarrow c \cdot m  = a - b , c \in \mathbb{Z}$\\ $\Rightarrow a \equiv b\quad ( \mod m ) \Rightarrow m \; | \; a-b$
+\item [遞移性] 若 $a \equiv b \quad (\mod c) , b \equiv d \quad (\mod c)$\\ 則 $a \equiv d (\mod c)$
+\item [保持基本運算] $\left \{ \begin{matrix} a \equiv b (\mod m)\\ c \equiv d (\mod m)\end{matrix}\right. \Rightarrow \left\{\begin{matrix}a \pm c \equiv b \pm d (\mod m)\\ a \cdot c \equiv b \cdot d (\mod m)\end{matrix}\right.$
+\item [放大縮小模數] 令$k \in \mathbb{Z}^+ , a \equiv b \quad (\mod m) \Leftrightarrow k \cdot a \equiv k \cdot b \quad (\mod k \cdot m)$
+\end{enumerate}
+\subsubsection{快速冪}
+我們常常遇到求$a^b mod c$為多少的題目，最簡單的作法是用迴圈花b次算出答案，但是在b很大時就無法快速算出。這時如果拆成$a^1,a^2,a^4,...,a^{2^x}$，先分別計算在乘起來，這樣只要花費$O(\log b)$的時間即可。
+\lstinputlisting{Math/abc.cpp}
 \subsubsection{模逆元}
-
+模逆元是取模下的反元素，即為找到$a^{-1}$使得$aa^{-1}\equiv\ 1\ mod\ c$。如果a要在mod c下有反元素，那麼$gcd(a,c)=1$，根據貝祖定理，可知存在整數$x,y$，使得$ax+cy=gcd(a,c)=1$，這裡的$x$即為a的反元素，我們可以修改找GCD的辦法，找出$a$的反元素。
+\lstinputlisting{Math/extgcd.cpp}
 \subsubsection{中國剩餘定理}
-\subsection{快速冪}
+中國剩餘定理，又稱中國餘數定理，是數論中的一個關於一元線性同餘方程組的定理。用來解決像下面這種問題：\\
+"有物不知其數，三三數之剩二，五五數之剩三，七七數之剩二。問物幾何？"，這題答案為$23+105n,n>=0$\\
+列出這種問題的式子(設$m_i$兩兩互質)：
+$\left \{ \begin{matrix} X\equiv a_1 (mod\ m_1)\\ X\equiv a_2 (mod\ m_1)\\ \cdot \\ \cdot \\ X\equiv a_n (mod\ m_n)\end{matrix}\right.$\\
+解決這類問題最簡單適用枚舉來求解，不過如果範圍太大就會吃TLE了。因此我們將$X=x_1+x_2+...+x_n$，我們設$M=\Pi_{i=1}^{n} m_i$，令$x_1\ mod\ m_1\equiv a_1$，而對其他$m_i$皆整除，亦即$(M/m_1)x_1\equiv a_1 (mod\ m_1)$，用找模逆元的方式求出$x_1$。$x_2,x_3,...,x_n$也是依照這個辦法求出，最後$X=\Sigma_{i=1}^{n} (M/m_i)x_i\ mod\ M\ +\ kM\ (k>=0)$。\\
+這個算法比枚舉會快很多，因為讀者不熟此算法複雜度，所以這裡先不提了。
 
-\subsection{一些關於質數的定理}
+\subsection{一些定理}
+\subsubsection{歐拉函數}
+歐拉函數計算對於一個整數N，小於等於N的正整數中，有幾個和N互質。通常用$\Phi(n)$表示。其公式為$\Phi(N)=N\times\Pi_{p|N}(1-\frac{1}{p})$
+\lstinputlisting{Math/Phi.cpp}
 \subsubsection{費馬小定理}
+給定一個質數$p$及一個整數$a$，那麼：\\
+$a^p \equiv a (\mod p)$\\
+如果$gcd(a,p)=1$，則：\\
+$a^{p-1} \equiv 1 (\mod p)$\\
 \subsubsection{歐拉定理}
+歐拉定理是比較generate版本的費馬小定理。給定兩個整數n和a，如果$gcd(a,n)=1$，則\\
+$a^{\Phi(n)} \equiv 1 (\mod n)$\\
+如果n是質數，$\Phi(n)=n-1$，也就是費馬小定理。
 \subsubsection{Wilson's theorem}
+給定一個質數$p$，則：\\
+$(p-1)!\equiv -1 (\mod p)$
