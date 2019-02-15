@@ -19,6 +19,11 @@
 \lstinputlisting{Math/GCD.cpp}
 複雜度為$O(\log(min(a,b)))$，最慘狀況發相在兩數為費式數列相鄰項時，C++<algorithm>有內建的\_\_gcd可以用。\\
 最小公倍數(Least Common Multiple,LCM)，則為兩數相乘再除以他們的GCD，為避免溢位狀況，可先將一數除以GCD，再乘以另外一數。
+\subsubsection{題目}
+\begin{enumerate}
+\item zerojudge a007(質因數分解)
+\item TIOJ 1040 (連分數)
+\end{enumerate}
 \subsection{模}
 \subsubsection{性質}
 \begin{enumerate}
@@ -46,6 +51,12 @@
 \subsubsection{模逆元}
 模逆元是取模下的反元素，即為找到$a^{-1}$使得$aa^{-1}\equiv\ 1\ mod\ c$。如果a要在mod c下有反元素，那麼$gcd(a,c)=1$，根據貝祖定理，可知存在整數$x,y$，使得$ax+cy=gcd(a,c)=1$，這裡的$x$即為a的反元素，我們可以修改找GCD的辦法，找出$a$的反元素。
 \lstinputlisting{Math/extgcd.cpp}
+\subsubsection{題目}
+\begin{enumerate}
+\item TIOJ 1199
+\item zerojudge b430
+\item zerojudge a289(求模逆元)
+\end{enumerate}
 \subsection{一些定理}
 \subsubsection{歐拉函數}
 歐拉函數計算對於一個整數N，小於等於N的正整數中，有幾個和N互質。通常用$\Phi(n)$表示。其公式為$\Phi(N)=N\times\Pi_{p|N}(1-\frac{1}{p})$
@@ -63,6 +74,11 @@ $a^{\Phi(n)} \equiv 1 (\mod n)$\\
 \subsubsection{Wilson's theorem}
 給定一個質數$p$，則：\\
 $(p-1)!\equiv -1 (\mod p)$
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 12493(歐拉定理)
+\item UVa 1434(Wilson's theorem)
+\end{enumerate}
 \subsection{中國剩餘定理}
 中國剩餘定理，又稱中國餘數定理，是數論中的一個關於一元線性同餘方程組的定理。用來解決像下面這種問題：\\
 "有物不知其數，三三數之剩二，五五數之剩三，七七數之剩二。問物幾何？"，這題答案為$23+105n,n>=0$\\
@@ -70,3 +86,7 @@ $(p-1)!\equiv -1 (\mod p)$
 $\left \{ \begin{matrix} X\equiv a_1 (mod\ m_1)\\ X\equiv a_2 (mod\ m_1)\\ \cdot \\ \cdot \\ X\equiv a_n (mod\ m_n)\end{matrix}\right.$\\
 解決這類問題最簡單適用枚舉來求解，不過如果範圍太大就會吃TLE了。因此我們將$X=x_1+x_2+...+x_n$，我們設$M=\Pi_{i=1}^{n} m_i$，令$x_1\ mod\ m_1\equiv a_1$，而對其他$m_i$皆整除，亦即$(M/m_1)x_1\equiv a_1 (mod\ m_1)$，用找模逆元的方式求出$x_1$。$x_2,x_3,...,x_n$也是依照這個辦法求出，最後$X=\Sigma_{i=1}^{n} (M/m_i)x_i\ mod\ M\ +\ kM\ (k>=0)$。\\
 總共有N個式子，每個式子都要找一次模逆元，所以複雜度為$O(n \log m)$
+\subsubsection{題目}
+\begin{enumerate}
+\item zerojudge c641
+\end{enumerate}
