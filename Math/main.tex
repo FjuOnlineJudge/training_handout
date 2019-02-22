@@ -1,12 +1,13 @@
 \section{數論}
+數論是數學中，專門在研究整數性質的領域，涉及質數、組合等，被譽為最純的數學領域，是數學的皇后。
 \subsection{質數}
-質數問題在程式競賽中常常遇到，通會建立質數表來查詢質數。
+質數為因數只有1和自己的數，質數問題在程式競賽中常常遇到，通會建立質數表來查詢質數。
 \subsubsection{一般篩法}
-每找到一個數x，就知道2x, 3x, 4x...都不是質數，把他們從候選名單剃除。
+每找到一個質數x，就知道2x, 3x, 4x...都不是質數，把他們從候選名單剃除。
 \lstinputlisting{Math/PrimeTable1.cpp}
 複雜度可到$O(N\log\log N)$，如果不從平方開始剃除，則會退化至$O(N\log N)$
 \subsubsection{線性篩法}
-將一般篩法優化至$O(N)$，我們期望每個合數都被其最小質因數剔除，這樣可以確保其均攤的線性。實作上，我們讓每一個數去提除"自己乘上$<=$其質因數的所有質數"的數字即可。
+將一般篩法優化至$O(N)$，我們期望每個合數都只被其最小質因數剔除，這樣可以確保其均攤的線性。實作上，我們讓每一個數去替除"自己乘上$<=$其質因數的所有質數"的數字即可。
 \lstinputlisting{Math/PrimeTable2.cpp}
 \subsection{因數}
 我們能將任意一個正整數做質因數分解，形式為$N=P_{1}^{x_{1}}P_{2}^{x_{2}}P_{3}^{x_{3}}...=\Pi P_{i}^{x_{i}}$，根據此形式，我們可以求出任一正整數的因數個數及因數總和
@@ -17,7 +18,7 @@
 \subsection{最大公因數和最小公倍數}
 最大公因數(Greatest Common Divisor, GCD)，可以用輾轉相除法求得。
 \lstinputlisting{Math/GCD.cpp}
-複雜度為$O(\log(min(a,b)))$，最慘狀況發相在兩數為費式數列相鄰項時，C++<algorithm>有內建的\_\_gcd可以用。\\
+複雜度為$O(\log(min(a,b)))$，最慘狀況發生在兩數為費式數列相鄰項時，C++<algorithm>有內建的\_\_gcd可以用。\\
 最小公倍數(Least Common Multiple,LCM)，則為兩數相乘再除以他們的GCD，為避免溢位狀況，可先將一數除以GCD，再乘以另外一數。
 \subsubsection{題目}
 \begin{enumerate}
@@ -27,17 +28,17 @@
 \subsection{模}
 \subsubsection{性質}
 \begin{enumerate}
-\item [加法] $(a+b)\ \%\ p= (a\ \%\ p +b\ \%\ p )\ \%\ p $
-\item [減法] $(a-b)\ \%\ p= (a\ \%\ p -b\ \%\ p +p)\ \%\ p $
-\item [乘法] $(a*b)\ \%\ p= (a\ \%\ p *b\ \%\ p )\ \%\ p $
-\item [次方] $(a^b)\ \%\ p= ((a\ \%\ p )^b)\ \%\ p $
-\item [加法結合律] $((a+b)\ \%\ p+c)\ \%\ p = (a+(b+c))\ \%\ p $
-\item [乘法結合律] $((a*b)\ \%\ p*c)\ \%\ p = (a*(b*c))\ \%\ p $
+\item [加法] $(a+b)\ \%\ p= (a\ \%\ p +b\ \%\ p )\ \%\ p$
+\item [減法] $(a-b)\ \%\ p= (a\ \%\ p -b\ \%\ p +p)\ \%\ p$
+\item [乘法] $(a*b)\ \%\ p= (a\ \%\ p *b\ \%\ p )\ \%\ p$
+\item [次方] $(a^b)\ \%\ p= ((a\ \%\ p )^b)\ \%\ p$
+\item [加法結合律] $((a+b)\ \%\ p+c)\ \%\ p = (a+(b+c))\ \%\ p$
+\item [乘法結合律] $((a*b)\ \%\ p*c)\ \%\ p = (a*(b*c))\ \%\ p$
 \item [加法交換律] $(a+b)\ \%\ p=(b+a)\ \%\ p$
 \item [乘法交換律] $(a*b)\ \%\ p=(b*a)\ \%\ p$
-\item [結合律] $((a+b)\ \%\ p*c)= ((a*c)\ \%\ p +(b*c)\ \%\ p )\ \%\ p $
+\item [結合律] $((a+b)\ \%\ p*c)= ((a*c)\ \%\ p +(b*c)\ \%\ p )\ \%\ p$
 \end{enumerate}
-關於兩個同餘的數也有一些性質。\\
+如果$a\equiv b (\mod m)$，我們會說$a,b$在模$m$下同餘，關於同餘也有一些性質。\\
 參考文章：https://wangwilly.github.io/willywangkaa/2018/05/08/Discrete-mathematics-Chinese-Remainder-Theorem/
 \begin{enumerate}
 \item [整除性] $a\equiv b \quad (\mod m) \Rightarrow c \cdot m  = a - b , c \in \mathbb{Z}$\\ $\Rightarrow a \equiv b\quad ( \mod m ) \Rightarrow m \; | \; a-b$
@@ -60,6 +61,9 @@
 \subsection{一些定理}
 \subsubsection{歐拉函數}
 歐拉函數計算對於一個整數N，小於等於N的正整數中，有幾個和N互質。通常用$\Phi(n)$表示。其公式為$\Phi(N)=N\times\Pi_{p|N}(1-\frac{1}{p})$
+如果 p 是質數: $\Phi(p) = p-1$\\
+如果 p 是質數: $\Phi(p^k)=p^{k−1}\times (p−1)$\\
+如果 pq 互質: $\Phi(pq) = \Phi(p)\times\Phi(q)$\\
 \lstinputlisting{Math/Phi.cpp}
 \subsubsection{費馬小定理}
 給定一個質數$p$及一個整數$a$，那麼：\\
@@ -70,7 +74,6 @@ $a^{p-1} \equiv 1 (\mod p)$\\
 歐拉定理是比較generate版本的費馬小定理。給定兩個整數n和a，如果$gcd(a,n)=1$，則\\
 $a^{\Phi(n)} \equiv 1 (\mod n)$\\
 如果n是質數，$\Phi(n)=n-1$，也就是費馬小定理。
-有了費馬小定理
 \subsubsection{Wilson's theorem}
 給定一個質數$p$，則：\\
 $(p-1)!\equiv -1 (\mod p)$
@@ -83,9 +86,9 @@ $(p-1)!\equiv -1 (\mod p)$
 中國剩餘定理，又稱中國餘數定理，是數論中的一個關於一元線性同餘方程組的定理。用來解決像下面這種問題：\\
 "有物不知其數，三三數之剩二，五五數之剩三，七七數之剩二。問物幾何？"，這題答案為$23+105n,n>=0$\\
 列出這種問題的式子(設$m_i$兩兩互質)：
-$\left \{ \begin{matrix} X\equiv a_1 (mod\ m_1)\\ X\equiv a_2 (mod\ m_1)\\ \cdot \\ \cdot \\ X\equiv a_n (mod\ m_n)\end{matrix}\right.$\\
-解決這類問題最簡單適用枚舉來求解，不過如果範圍太大就會吃TLE了。因此我們將$X=x_1+x_2+...+x_n$，我們設$M=\Pi_{i=1}^{n} m_i$，令$x_1\ mod\ m_1\equiv a_1$，而對其他$m_i$皆整除，亦即$(M/m_1)x_1\equiv a_1 (mod\ m_1)$，用找模逆元的方式求出$x_1$。$x_2,x_3,...,x_n$也是依照這個辦法求出，最後$X=\Sigma_{i=1}^{n} (M/m_i)x_i\ mod\ M\ +\ kM\ (k>=0)$。\\
-總共有N個式子，每個式子都要找一次模逆元，所以複雜度為$O(n \log m)$
+$\left \{ \begin{matrix} X\equiv a_1 (mod\ m_1)\\ X\equiv a_2 (mod\ m_2)\\ \cdot \\ \cdot \\ X\equiv a_n (mod\ m_n)\end{matrix}\right.$\\
+解決這類問題最簡單適用枚舉來求解，不過如果範圍太大就會吃TLE了。因此我們 ，我們設$M=\Pi_{i=1}^{n} m_i$，令$x_1\ mod\ m_1\equiv a_1$，而對其他$m_i$皆整除，拆解$x_1$成為$x_1=(M/m_1)r_1$亦即$(M/m_1)r_1\equiv a_1 (mod\ m_1)$，用找模逆元的方式求出$x_1$。$x_2,x_3,...,x_n$也是依照這個辦法求出，最後$X=(\Sigma_{i=1}^{n} x_i)\ mod\ M\ +\ kM\ (k>=0)$。\\
+總共有n個式子，每個式子都要找一次模逆元，所以複雜度為$O(n \log m)$
 \subsubsection{題目}
 \begin{enumerate}
 \item zerojudge c641
