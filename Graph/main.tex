@@ -20,6 +20,25 @@
 \item 重邊 (multiple edge)：在一張圖中,存在 $e_i$, $e_j$ 滿足 $i$ != $j$ and $e_i = e_j$，則稱為重邊。
 \item 連通 (connected)：無向圖中,若 $u$ 和 $v$ 存在路徑,則 $u$ 和 $v$ 連通。若一群點兩兩連通,則這些點都連通。
 \end{enumerate}
+\subsection{特殊圖}
+有一些特殊的圖，擁有一的特殊的性質可以幫助解題，或是少到一些麻煩的條件讓題目好處理。
+\begin{enumerate}
+\item 簡單圖(Simple Graph) 沒有自環和重邊的圖。
+\item 連通圖(connected Graph) 無向圖中，任意兩點皆可經過一些邊訪問彼此，這張圖即為無向圖。
+\item 樹(Tree) 一張沒有環且連通的圖。
+\item 森林(Forest) 由無數個互不連通的樹所形的圖為森林。
+\item 完全圖(Complete Graph) 無向圖中，任意兩點$u, v$皆存在一條邊$e_i = (u, v)$，稱為完全圖。一張n個點的完全圖簡記為$K_n$，在集合上曾為完全圖為"團"
+\item 競賽圖(Tournament Graph) 有向圖中，任意兩點$u, v$皆存在一條邊$e_i = (u, v)$，稱為競賽圖。
+\item 有向無環圖(Directed acyclic graph, DAG) 沒有環的無向圖。
+\item 二分圖(Bipartite Graph) 能將圖上的點分成兩個集合，任意一條邊$e_i = (u, v)$都滿足，$(u, v)$在不同集合裡，該圖稱為二分圖。
+\item 平面圖(Planar Graph) 可畫在平面上，且任意兩條邊皆不重疊的圖。
+\end{enumerate}
+\subsection{圖的關係}
+\begin{enumerate}
+\item 子圖(subgraph) 如果$G'=(V', E')$是$G=(V, E)$的子圖，則$V'\in V$且$E'\in E$。
+\item 補圖 (complement graph) graph):令 G = (V, E) 是一個圖,K 包含所有 V 的二元子集 (2-element subset)。則圖 H = (V, K\\+E) 是 G 的補圖。換句話說，把原本的邊移除，加入原本不存在的邊即是補圖。
+\item 同構 (isomorphic)
+\end{enumerate}
 \subsection{儲存}
 至於圖要怎麼存起來呢，以下介紹兩種辦法。設$V$為點數，$E$為邊數。
 \subsubsection{相鄰矩陣(adjacency matrix)}：開一個 $V \times V$ 的資料結構$M$(通常會用二維陣列)，$M[a][b]$代表的是點$a$至$b$的邊數或權重。空間複雜度$O(V^2)$。加、刪邊時間複雜度 $O(1)$。
@@ -60,11 +79,30 @@ BFS和DFS的時間複雜度皆為$O(V+E)$，空間複雜度皆為$O(V)$。\\
 \item 葉解點(leaf)：度數為1的節點，有根樹的根結點則會是題目需求來決定是否為葉節點。
 \item 父節點、子節點：有根樹中，兩個相連的節點，比較接近樹根的為父節點，反之為子節點。
 \item 祖先(ancestor)、子孫(descandent)：有根樹中，節點到根結點中，所有的節點皆為祖先。反過來說，該節點是他的祖先的子孫。依題目所需，有時自己也是自己的祖先(尤其是根最常這樣定義)。
-\item 距離(distance)：為兩個點所形成路徑之邊數，或是路徑上權重之和。
+\item 距離( distance)：為兩個點所形成路徑之邊數，或是路徑上權重之和。
 \item 深度(depth)：有根樹中，節點到根結點之距離。
 \item 高度(height)：有根樹中，節點到與它距離最大的葉節點的距離稱為高度。根的高度稱為這整顆樹的高度。
 \item 子樹(subtree)：設有兩棵樹$T$,$T_1$，如果$V_1\in V$，$E_1\in E$，那麼我們說 $T_1$ 為 $T$ 的子樹
 \item N元樹：每個節點最多有N個節點，稱為N元樹。
+\end{enumerate}
+\subsubsection{時間戳記}
+如果我們從樹根DFS，紀錄第一次經過(進入)和最後一次經過(離開)的時間，這種技巧稱為"時間戳記"(time stamp)。
+\lstinputlisting{Graph/timestamp.cpp}
+有了時間戳記，我們有以下性質：
+對於樹上任意兩點$u,v$，$u$是$v$的祖先 $iff$ $t_{in}(u) \leq t_{in}(v)$且$t_{out}(v) \leq t_{out}(u)$，此性質還可以推出，一顆子樹必在一個連續的區間，於是時間戳記就可以搭配其他資料結構，來解決樹上的RMQ問題了(這裡先不提)。
+\subsubsection{最低共同祖先(Lowest Common Ancestor, 最低共同祖先)}
+在有根樹上任意兩點$u,v$，LCA(u,v)是指，兩點祖先交集中，深度最深的一個點。暴力尋找LCA花$O(V)$時間，不太理想，因此有很多演算法發評出來解決這問題，倍增法是最常見之一。\\
+倍增法是利用DP是做出來，$par[v][i]$代表$v$的第$2^i$層祖先。
+\lstinputlisting{Graph/doubling.cpp}
+時間複雜度為$O(V\log V)$。\\
+建好表之後，由於兩點的共同祖先有單調性，因此可以用二分搜來尋找LCA了。
+\lstinputlisting{Graph/LCA.cpp}
+時間複雜度為$O(\log V)$。\\
+有了LCA我們可以找出$u, v$的(唯一一條)路徑，也可以找出該路徑長度、路徑上最小(大)權重的邊...，在處理樹的問題，LCA是一大利器。
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 1357(時間戳記)
+\item zerojudge d767(LCA)
 \end{enumerate}
 \subsection{二元樹}
 二元樹在程式競賽中常常被討論，有許多資料結構都是二元樹，例如STL提到的heap。
