@@ -20,7 +20,7 @@ void Doubling(){
 }
 
 bool anc(int v, int u){
-    return tin[v] < tin[u] && tout[u] < tout[v]; 
+    return tin[v] <= tin[u] && tout[u] <= tout[v]; 
 }
 
 int LCA(int v, int u){

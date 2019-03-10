@@ -90,12 +90,12 @@ BFS和DFS的時間複雜度皆為$O(V+E)$，空間複雜度皆為$O(V)$。\\
 \lstinputlisting{Graph/timestamp.cpp}
 有了時間戳記，我們有以下性質：
 對於樹上任意兩點$u,v$，$u$是$v$的祖先 $iff$ $t_{in}(u) \leq t_{in}(v)$且$t_{out}(v) \leq t_{out}(u)$，此性質還可以推出，一顆子樹必在一個連續的區間，於是時間戳記就可以搭配其他資料結構，來解決樹上的RMQ問題了(這裡先不提)。
-\subsubsection{最低共同祖先(Lowest Common Ancestor, 最低共同祖先)}
+\subsubsection{最低共同祖先(Lowest Common Ancestor, LCA)}
 在有根樹上任意兩點$u,v$，LCA(u,v)是指，兩點祖先交集中，深度最深的一個點。暴力尋找LCA花$O(V)$時間，不太理想，因此有很多演算法發評出來解決這問題，倍增法是最常見之一。\\
 倍增法是利用DP是做出來，$par[v][i]$代表$v$的第$2^i$層祖先。
 \lstinputlisting{Graph/doubling.cpp}
 時間複雜度為$O(V\log V)$。\\
-建好表之後，由於兩點的共同祖先有單調性，因此可以用二分搜來尋找LCA了。
+建好表之後，由於兩點的共同祖先有單調性，以$u$點的所有祖先要看，在LCA(包含)以上的祖先也會是兩點的共同祖先，否則就只是$u$的祖先，，因此可以用二分搜來尋找LCA了。
 \lstinputlisting{Graph/LCA.cpp}
 時間複雜度為$O(\log V)$。\\
 有了LCA我們可以找出$u, v$的(唯一一條)路徑，也可以找出該路徑長度、路徑上最小(大)權重的邊...，在處理樹的問題，LCA是一大利器。
