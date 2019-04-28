@@ -229,6 +229,11 @@ INF & else
 \lstinputlisting{Graph/TopologicalSort.cpp}
 另一種是利用DFS+時間戳記，如果發現有任一條邊$(u,v)$，$tin[u]>tin[v]$，那就無解，否則依照$tout$由大到小形成拓譜排序。\\
 這兩種辦法的時間複雜度皆為$O(V+E)$
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 10305
+\item UVa 1119
+\end{enumerate}
 \subsection{Connectivity}
 一張任意兩點接連通的圖叫做連通圖，在實際情況，例如網路或電力的架設都希望線路是連通的，要是地方壞掉，我們希望影響能越小越好。在圖論中，有算法可以找出去掉那些部分會使得圖變成不連通的，以下詳細說明。
 \subsubsection{DFS邊分類}
@@ -277,3 +282,8 @@ INF & else
 \end{enumerate}
 \lstinputlisting{Graph/UdgCutEdge.cpp}
 和前面點雙連通相同，時間複雜度為$O(V+E)$
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 11504
+\item UVa 10972
+\end{enumerate}
