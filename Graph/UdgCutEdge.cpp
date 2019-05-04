@@ -6,17 +6,15 @@ vector<pair<int,int>> my_cut_edge;
 void dfs(int now,int cur_depth, int parent){
 	visit[now] = true;
 	depth[now] = low[now] = cur_depth;
-	int cut_son = 0;
+	// int cut_son = 0;
 	for (auto i: G[now]){
+		if(i != parent)continue;
 		if (visit[i]){// ancestor
-			if (i != parent && depth[i] < low[now])
-				low[now] = depth[i];
-		}
-		else{// offspring
+			low[now] = min(low[now], depth[i]);
+		}else{// offspring
 			dfs(i, cur_depth + 1, now);
-			cut_son += 1;
-			if (low[i] < low[now])
-				low[now] = low[i];
+			// cut_son += 1;
+            low[now] = min(low[now], low[i]);
 			if (low[i] > depth[now])
 				my_cut_edge.push_bach({now, i});
 		}

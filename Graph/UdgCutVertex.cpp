@@ -8,14 +8,11 @@ void dfs(int now,int cur_depth){
 	int cut_son = 0;
 	for (auto i: G[now]){
 		if (visit[i]){// ancestor
-			if (depth[i] < low[now])
-				low[now] = depth[i];
-		}
-		else{// offspring
+			low[now] = min(low[now], depth[i]);
+		}else{// offspring
 			dfs(i, cur_depth + 1);
 			cut_son += 1;
-			if (low[i] < low[now])
-				low[now] = low[i];
+			low[now] = min(low[now], low[i]);
 			if (low[i] >= depth[now])
 				is_cut_vertex[now] = true;
 		}
