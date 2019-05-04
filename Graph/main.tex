@@ -296,3 +296,8 @@ INF & else
 那我們就以邊的角度來思考點連通元件，對於一個點$p$，與父親點$f$之間有條邊$e_f$，與兒子點$c$之間有條邊$e_c$，如果$low(c)>depth(p)$(不計算樹邊)，則$e_f$和$e_c$不在同一個點連通元件內，反之$e_f$和$e_c$在同一個點連通元件內。根據以上性質，我們可以在DFS過程中維護一個stack，紀錄目前經過的邊，當遇到割點時，可以快速找出點雙連通元件。
 \lstinputlisting{Graph/UdgBvc.cpp}
 這個演算法一樣有做DFS，並且維護一個stack，每條邊都會被丟進去一次，因此時間複雜度為$O(V+E)$。
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 1108
+\item UVa 1464
+\end{enumerate}
