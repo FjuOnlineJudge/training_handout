@@ -286,18 +286,56 @@ INF & else
 先來定義相關術語
 \begin{enumerate}
 \item [連通元件] 一張圖 $G$ 有很多子圖，如果一個子圖 $G'$ 是連通的，我們稱之為連通元件(connected component)，如果一個連通元件滿足"加上任意一個其他的點就不再連通"，則稱這樣的連通元件是"極大的"(maximal)。
-\item [邊連通元件] 如果一張的某個子圖是一張邊雙連通圖，我們就成這張子圖為邊連通元子圖(bi-edge-connected graph)或邊連通元件(bi-edge-connected component)。
-\item [點連通元件] 如果一張的某個子圖是一張點雙連通圖，我們就成這張子圖為點連通元子圖(bi-vertex-connected graph)或點連通元件(bi-vertex-connected component)。
+\item [邊雙連通元件] 如果一張的某個子圖是一張邊雙連通圖，我們就成這張子圖為邊連通元子圖(bi-edge-connected graph)或邊雙連通元件(bi-edge-connected component)。
+\item [點雙連通元件] 如果一張的某個子圖是一張點雙連通圖，我們就成這張子圖為點連通元子圖(bi-vertex-connected graph)或點雙連通元件(bi-vertex-connected component)。
 \end{enumerate}
-一般來說，我們會討論極大的連通元件，以下所有的連通件都是極大的。\\
+一般來說，我們會討論極大的連通元件，以下所有的連通元件都是極大的。\\
 要一張張圖的所有邊雙連通元件，只要拔掉所有橋，剩下的圖就是原圖所有的邊連通元件。\\
-至於點連通元件就沒那麼簡單了，因為同一個割點有可能同時存在多的點連通元件內，並且點的相鄰邊不一定不同的點連通元件中，所以我們不能直接拔點拔掉來求出點連通元件。\\
+至於點連通元件就沒那麼簡單了，因為同一個割點有可能同時存在多的點連通元件內，並且點的相鄰邊不一定不同的點連通元件中，所以我們不能直接拔點拔掉來求出點雙連通元件。\\
 至於為什麼會有這樣的差異，是因為一般的圖是以點為主題，邊用來描敘點和點之間的東西。而點連通問題則是以邊為主體，點用來描述邊和邊之間的關係，後者描述的關係不是二元關係，所以讓問題變得複雜。\\
-那我們就以邊的角度來思考點連通元件，對於一個點$p$，與父親點$f$之間有條邊$e_f$，與兒子點$c$之間有條邊$e_c$，如果$low(c)>depth(p)$(不計算樹邊)，則$e_f$和$e_c$不在同一個點連通元件內，反之$e_f$和$e_c$在同一個點連通元件內。根據以上性質，我們可以在DFS過程中維護一個stack，紀錄目前經過的邊，當遇到割點時，可以快速找出點雙連通元件。
+那我們就以邊的角度來思考點雙連通元件，對於一個點$p$，與父親點$f$之間有條邊$e_f$，與兒子點$c$之間有條邊$e_c$，如果$low(c)>depth(p)$(不計算樹邊)，則$e_f$和$e_c$不在同一個點連通元件內，反之$e_f$和$e_c$在同一個點雙連通元件內。根據以上性質，我們可以在DFS過程中維護一個stack，紀錄目前經過的邊，當遇到割點時，可以快速找出點雙連通元件。
 \lstinputlisting{Graph/UdgBvc.cpp}
 這個演算法一樣有做DFS，並且維護一個stack，每條邊都會被丟進去一次，因此時間複雜度為$O(V+E)$。
 \subsubsection{題目}
 \begin{enumerate}
 \item UVa 1108
 \item UVa 1464
+\end{enumerate}
+\subsubsection{有向圖的強連通}
+談完了無向圖，就來談論有向圖，有向圖的邊具有方向性，因此比無向圖更難達成"連通"的性質，於是為了跟無向圖做區分，訂了一個術語"強連通"來表示有向圖的連通性。
+\begin{enumerate}
+\item [強連通] 對於有向圖上的兩點$A,B$，若存在一條路徑從$A$到$B$，以及存在一條路徑從$B$到$A$，則我們稱$A,B$兩點強連通(strongly connected)
+\item [強連通圖] 如果一張有向圖上任意兩點皆強連通，則這張圖為強連通圖(strongly connected graph)
+\item [強連通元件] 如果一張圖中的某個子圖是一張強連通圖，我們稱這個子圖為強連通子圖(strongly connected subgraph)，或是強連通元件(strongly connected component)
+\end{enumerate}
+強連通為有向圖中很重要的性質，如果將強連通元件各自縮成一點，新圖是一張有向無環圖(Directed Acyclic Graph, DAG)DAG有許多強力性質，可以讓圖上的問題變得有解，有些圖論題目一開始會先找出SCC來解題。
+\subsubsection{強連通元件}
+Tarjan演算法也可以找出強連通元件，不過邏輯會很複雜，所以我們介紹另一種演算法叫做Kosaraju's algorithm。\\
+Kosaraju's algorithm基於觀察到的兩件事而成，第一件事為將原圖每條邊都反向，得到的新圖，所有SCC的位置依舊相同。第二件事為如果我們用"正確的"順序遍歷圖，每次遍歷到的點視為同一個SCC，那麼是有可能可以找出正確的SCC的。\\
+我們分成三種情況來討論那樣才是正確的遍歷順序。
+\begin{enumerate}
+\item $A,B$在同一個SCC裡：先拜訪誰都可以，反正另外一個點也會被拜訪到
+\item $A,B$互相都不能走到對方：這種情況也是先拜訪誰都可以，反正毫不相干
+\item $A$走的到$B$，$B$走不到$A$(單向通行)：這種情況只能先走$B$再走$A$，否則先走$A$的話，$B$會被認為和$A$在同一個$SCC$內
+\end{enumerate}
+所以只要給出一個順序，對於所有只有$A$走的到$B$，$B$走不到$A$的點對$(A,B)$都滿足$B$會比$B$先被走到，這個演算法就行得通了。\\
+強大的Kosaraju就發明了一個方法：
+\begin{enumerate}
+\item 將圖上所有邊反向，得到新圖$G'$
+\item 在圖$G'$上找一個未拜訪過的點DFS並且記錄時間戳，DFS完後，如果還有點未被DFS，再進行前敘動作。
+\item 依時間戳得離開戳記對點由大到小排序，所得序列即為所求。再根據這個序列在原圖$G$做DFS，每次DFS到的點形成一個SCC。
+\end{enumerate}
+現在來證明這個序列滿足我們的要求：
+\begin{enumerate}
+\item 對於圖G上任意單向通行的點對$A\rightarrow B$，在$G'$上會變成單向通行的點對$B\rightarrow A$
+\item 如果$A$先被拜訪，因為$A$沒辦法做到$B$，所以$A$會先拜訪完畢，因此$A$的離開戳記會小於$B$的離開戳記
+\item 如果$B$先被拜訪，$B$一定會走到$A$，$A$拜訪完畢時，$B$一定還沒拜訪完畢，因此$A$的離開戳記依然會小於$B$的離開戳記
+\item 得證$A$的離開戳記一定會小於$B$的離開戳記，即$B$在序列中會在$A$前面。
+\end{enumerate}
+以下是程式碼，此算法會做兩次$DFS$，時間複雜度為$O(V+E)$。
+\lstinputlisting{Graph/SCC.cpp}
+\subsubsection{題目}
+\begin{enumerate}
+\item UVa 11324
+\item UVa 11504
 \end{enumerate}
