@@ -1,77 +1,8 @@
-\section{基本}
-\subsection{複雜度}
-複雜度是定性描述該演算法執行成本(時間/空間)函式，用來分析資料結構和演算法(DSA)。
-\subsubsection{常用函數}
-\begin{enumerate}
-\item [Big $O$]
-用來表示一個複雜度的上界，定義為$f(n)\in O(g(n))\ \ iff\ \ \exists\ c,\ N\in R^{+},\ \forall n \geq  N$ 有 $|f(n)| \leq |cg(n)|$，例如$f(n)=5n^2+4n+1$，我們會注重最高項$5n^2$，且我們會5是常數，得出$f(n)\in O(n^2)$
-\item [Big $\Omega$]
-用來表示一個複雜度的下界，對於任意的 $f(n) \in O(g(n))$,都有 $g(n) \in \Omega (f(n))$。
-\item [Big $\Theta$]
-要同時滿足Big $O$和Big $\Omega$
-\end{enumerate}
-Big $O$ 是我們比較常用的，其他兩個可能再一些地方會用到
-    
-\subsubsection{常見複雜度}
-$O(1) < O(log\ n) < O(n) < O(n\ log\ n) < O(n^2) < O(n^3) < O(2^n) < O(n!)$
-另外還有一個在並查集常見，即$O(\alpha(n))$，近似於$O(1)$，可直接當作$O(1)$
-\subsubsection{時間/空間複雜度}
-時間複雜度，和運算有關，*/\%會比+-還要久，而複雜度得項次會跟迴圈有關，初階競賽只會在意你的項次，只要不要太大基本都會過，進階些比賽，有可能出現常數過大，導致複雜度合理卻還是吃TLE的情況，這時候需要利用"壓常數"技巧，降低時間，讓程式AC。 \\  空間複雜度，則是跟你宣告的變數記憶體總和有關，比時間複雜度容易估計，在樹狀的資料結構，往往需要搭配動態記憶體，才不會因為開太多空間而吃了MLE。 \\  題外話，如果你在你的array不是開在全域內，開了10的5,6次，在執行時跑出RE，那你有以下兩種解決方式
-\begin{enumerate}
-\item 把array移至全域
-\item 加上static，表示靜態變數
-\end{enumerate}
-\lstinputlisting{Syntax/static.cpp}
-\subsection{函式}
-函式為程式裡的運算單元，可以接受資料，並回傳指定值。main是C/C++程式的入口函式，接受命令列的參數，正常情況會回傳0代表正常運作。\\
-以下為其語法
-\lstinputlisting{Syntax/function0.cpp}
-範例
-\lstinputlisting{Syntax/function1.cpp}
-函式有個特性為自呼叫，也就是自己的區域可以呼叫自己，但要有終止條件，不然會陷入無限遞迴，同時也要避免遞迴過深，造成stack overflow。
-\lstinputlisting{Syntax/function2.cpp}
-函式有很多用處，一個為模組化，意即相同的部分(最多只差一些參數)，寫成一個函式，除了簡潔，在除錯也比較方便。一個是利用自呼叫特性實作遞迴，遞迴可將問題拆解成同類的子問題而解決問題。\\
-常見遞迴使用
-\begin{enumerate}
-\item 分治
-\item dp中的top-down
-\item 圖/樹的搜索
-\end{enumerate}
-
-\subsection{指標}
+\section{其他}
+\input{Syntax/Complexity/main.tex}
 指標是紀錄記憶體的位址的變數，不管是基礎型態或自定義型態皆可用指標，指標的可以讓你直接對記憶體操作。而指標對學習者是一到難度高的門檻，但在程式競賽中，是不可或缺的。\\ 指標在程競中會用到的地方是"動態記憶體配置"，這在比較進階的資料型態會比較常出現。
 \lstinputlisting{Syntax/pointer.cpp}
 \lstinputlisting{Syntax/pointer2.cpp}
-\subsection{參考}
-參考型態代表一個變數的別名，可直接取得變數的位址，並間接透過參考型態別名來操作物件， 作用類似於指標，但卻不必使用指標語法，也就是不必使`*`運算子來提取值。
-\lstinputlisting{Syntax/reference.cpp}
-參考型態可用在取代太長的變數(如：`a[x][y][z]`)，容易維護。另一個是當函式要傳入可修改的值，可取代指標。
-\subsection{傳值}
-函式傳入的參數，可以是一般、指標或是參考型態，以下以Swap來介紹
-\subsubsection{call by value}
-傳入的變數為一般型態，會"複製"一份到函式，原本的變數不會有任何改變。
-\lstinputlisting{Syntax/pass1.cpp}
-\subsubsection{call by address/value of pointer}
-傳入的變數為指標型態，函式內的變數改變，是對記憶體操作，所以原本的數字也會跟著改變。
-\lstinputlisting{Syntax/pass2.cpp}
-\subsubsection{call by reference}
-傳入的變數為參考型態，函數內的變數是原本變數的分身，所以函數內變數改變時，原本變數也會跟者改變。
-\lstinputlisting{Syntax/pass3.cpp}
- \subsection{struct}
-structc是讓coder能將原本獨立的資料包在一起。例如：三維空間由x座標、y座標、z座標組成。\\
-語法：
-\begin{enumerate}
-\item 型態(type)可以是一般或是指標型態
-\item 也可以寫函式或重載運算子
-\end{enumerate}
-\lstinputlisting{Syntax/struct1.cpp}
-以下的例子為平面上的點。
-\lstinputlisting{Syntax/struct2.cpp}
-\subsubsection{建構子(constructor)、解構子(destructor)}
-建構子和strcut name同名，是用來初始化struct裡的資料，如果不寫的話，會有預設建構子，裡面的資料都是亂數。根據請況可多載，然而，如果你寫了運算子，一定要寫一個不帶任何參數的運算子，否則的話，像第14行這樣只有宣告，沒加其他東西的的程式碼就不會通過。\\
-解構子的名字形式為 $ \sim strcut name$，是在變數離開作用域時運作，不寫的話也是會有預設解構子，在程式比賽中這樣就已足夠。
-\subsubsection{重載運算子}
-c++原有的型態都根據需要，定義了各種運算子，但structㄒ如果有需要的話，須自己定義。而在競賽中，常需要作排序而需要小於運算子(`<`)。
 \subsection{algorithm}
 \subsubsection{sort}
 這個函式傳入兩個變數，代表容器(array 或是 vector)的頭尾$[a,b)$，這裡的b不會排序，用來指示為結尾，例如要排序a陣列的第0到第5個元素。
