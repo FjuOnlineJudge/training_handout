@@ -11,6 +11,7 @@ void dfs(int v, int p){
     }
     tout[v] = ++timer;
 }
+
 void Doubling(){
     for(int i = 1; i < N; ++i){
         for(int j = 1; j < LOG; ++j){

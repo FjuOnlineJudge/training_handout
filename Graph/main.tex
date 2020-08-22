@@ -323,7 +323,7 @@ Kosaraju's algorithm基於觀察到的兩件事而成，第一件事為將原圖
 \begin{enumerate}
 \item 將圖上所有邊反向，得到新圖$G'$
 \item 在圖$G'$上找一個未拜訪過的點DFS並且記錄時間戳，DFS完後，如果還有點未被DFS，再進行前敘動作。
-\item 依時間戳得離開戳記對點由大到小排序，所得序列即為所求。再根據這個序列在原圖$G$做DFS，每次DFS到的點形成一個SCC。
+\item 依時間戳的離開戳記對點由大到小排序，所得序列即為所求。再根據這個序列在原圖$G$做DFS，每次DFS到的點形成一個SCC。
 \end{enumerate}
 現在來證明這個序列滿足我們的要求：
 \begin{enumerate}
