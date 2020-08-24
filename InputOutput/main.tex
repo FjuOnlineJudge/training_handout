@@ -1,0 +1,34 @@
+\section{標準輸入輸出}
+\subsection{標準輸入輸出、文件輸入輸出}
+標準輸入：由鍵盤輸入。\\
+標準輸出：輸出到螢幕。\\
+文件輸入：由文件輸入。\\
+文件輸出：輸出到文件。\\
+標準/文件輸出輸入可以混用。，
+\subsection{C 標準輸入輸出, scanf 和 printf}
+scanf 和 printf 定義在標頭檔 stdio.h。
+scanf 和 printf 會給定一個有格式的字串格式為："\%[*][width][length]specifier"，在這個格式後面接參數，在格式字串有幾個參數，後面就要接相對應個數的參數。\\
+\lstinputlisting{InputOutput/scanfPrintfBrief.cpp}
+specifier(格式碼)，是用來指定輸入的型態，下表為常用的格式碼：\\
+\begin{tabular}{|r|l|} \hline 格式碼 & 說明 \\\hline \%d & int \\\hline \%u & unsigned int \\\hline \%lld & long long int \\\hline \%llu & unsigned long long int \\\hline \%f & float \\\hline \%lf & double \\\hline \end{tabular}\\
+\lstinputlisting{InputOutput/scanfPrintf.cpp}
+上面的例子會發現 scanf 的變數前面都會多一個 \&，簡單來說就是 scanf 要的是記憶體位置，要更詳細理解要先學完指標。(編者認為這是當初設計沒想到的一個 bug) \\
+width 在 printf 的用途為對右靠齊，如果輸出的字元數小於所設寬度，不足部分會用空白填滿；如果輸出的字元數大於所設寬度，則無效。\\
+\lstinputlisting{InputOutput/printhWidth.cpp}
+若無法事先知道寬度，可用 "*" 代替。\\
+\lstinputlisting{InputOutput/printhWidth2.cpp}
+length 在 printf 的用途為指定輸出長度。整數部分，如果是輸出的字元數小於所設長度，不足部分會補 $0$；如果輸出的字元數大於所設長度，則無效。浮點數部分，所謂的輸出長度指的是小數點後的位數。\\
+\lstinputlisting{InputOutput/printhLength.cpp}
+若無法事先知道長度，亦可用 "*" 代替。\\
+\lstinputlisting{InputOutput/printhLength2.cpp}
+width 在 scanf 的用法，請參考 C 字串章節。\\
+\subsection{C++ 輸入輸出, cin 和 cout}
+cin 和 cout 定義在標頭檔 iostream。\\
+cin 和 cout 並不需要先給出格式，直接接你要輸出/輸入的變數名稱就好了。\\
+\lstinputlisting{InputOutput/cinCoutBrief.cpp}
+\lstinputlisting{InputOutput/cinCout.cpp}
+C++ 的 cout 也有設定寬度和長度的功能，需使用到標頭檔 iomanip。\\
+寬度：setw，如果輸出的字元數小於所設寬度，不足部分會用空白填滿；如果輸出的字元數大於所設寬度，則無效\\
+\lstinputlisting{InputOutput/setw.cpp}
+長度：setprecision，只對浮點數有效。cout 有兩種表示方式，scientific 和 fixed，scientific 只會輸出有效位數，fixed 會將所有位數印出。\\
+\lstinputlisting{InputOutput/setprecision.cpp}
